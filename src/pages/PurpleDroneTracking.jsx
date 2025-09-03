@@ -502,9 +502,9 @@ const PurpleDroneTracking = () => {
                                   )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                                    <h4 className="font-semibold text-white text-lg">
-                                      {event.Remarks}
+                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+                                    <h4 className="font-semibold text-white text-lg mb-2 sm:mb-0">
+                                      {event.Remarks || "N/A"}
                                     </h4>
                                     <span
                                       className={`px-3 py-1 rounded-full text-sm font-medium border ${
@@ -516,7 +516,34 @@ const PurpleDroneTracking = () => {
                                       {event.Status || "N/A"}
                                     </span>
                                   </div>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-300">
+
+                                  {/* Created By */}
+                                  <div className="mb-3">
+                                    <div className="flex items-center text-sm text-slate-300">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        Created By:
+                                      </span>{" "}
+                                      <span className="ml-1 text-white font-semibold">
+                                        {event.createdBy || "N/A"}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {/* Date and Time */}
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-300">
                                     <div className="flex items-center">
                                       <svg
                                         className="w-4 h-4 mr-2 text-emerald-500"
@@ -532,7 +559,9 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">Date:</span>{" "}
-                                      <span>{date}</span>
+                                      <span className="ml-1 text-white">
+                                        {date}
+                                      </span>
                                     </div>
                                     <div className="flex items-center">
                                       <svg
@@ -549,7 +578,40 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">Time:</span>{" "}
-                                      <span>{time}</span>
+                                      <span className="ml-1 text-white">
+                                        {time}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {/* Location Name */}
+                                  <div className="mt-3">
+                                    <div className="flex items-center text-sm text-slate-300">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                        />
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        Location:
+                                      </span>{" "}
+                                      <span className="ml-1 text-white font-semibold">
+                                        {event.userlocation || "N/A"}
+                                      </span>
                                     </div>
                                   </div>
                                 </div>
@@ -607,57 +669,207 @@ const PurpleDroneTracking = () => {
                           </div>
                           Status Details
                         </h3>
-                        <div className="space-y-4">
-                          {narvarData.map((item, index) => (
-                            <motion.div
-                              key={index}
-                              className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50"
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                            >
-                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div>
-                                  <span className="text-slate-300 font-medium">
-                                    Status:
+                        <div className="space-y-6">
+                          {narvarData.map((item, index) => {
+                            const { date: createdDate, time: createdTime } =
+                              formatTrackingDate(item.CreatedAt);
+                            const { date: updatedDate, time: updatedTime } =
+                              formatTrackingDate(item.UpdatedAt);
+
+                            return (
+                              <motion.div
+                                key={index}
+                                className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                              >
+                                {/* Status Header */}
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                                  <h4 className="text-xl font-bold text-white mb-2 sm:mb-0">
+                                    {item.Status || "N/A"}
+                                  </h4>
+                                  <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-sm font-medium">
+                                    {item.StatusCode || "N/A"}
                                   </span>
-                                  <p className="text-white font-semibold text-lg">
-                                    {item.Status}
-                                  </p>
                                 </div>
-                                <div>
-                                  <span className="text-slate-300 font-medium">
-                                    Mode:
-                                  </span>
-                                  <p className="text-white font-semibold text-lg">
-                                    {item.ShipmentMode}
-                                  </p>
-                                </div>
-                                <div>
-                                  <span className="text-slate-300 font-medium">
-                                    Location:
-                                  </span>
-                                  <p className="text-white font-semibold text-lg break-words">
-                                    {item.LocationName ||
-                                      item.CityName ||
-                                      "N/A"}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="pt-4 border-t border-slate-600/50">
-                                <div className="text-sm text-slate-300 space-y-1">
-                                  <div>
-                                    Created: {formatDate(item.CreatedAt)}
-                                  </div>
-                                  {item.DeliveryDate && (
-                                    <div>
-                                      Expected: {formatDate(item.DeliveryDate)}
+
+                                {/* Main Details Grid */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                                  {/* Location Name */}
+                                  <div className="bg-slate-800/50 rounded-lg p-3">
+                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                        />
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        Location Name
+                                      </span>
                                     </div>
-                                  )}
+                                    <p className="text-white font-semibold text-lg break-words">
+                                      {item.LocationName || "N/A"}
+                                    </p>
+                                  </div>
+
+                                  {/* Shipment Mode */}
+                                  <div className="bg-slate-800/50 rounded-lg p-3">
+                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        Shipment Mode
+                                      </span>
+                                    </div>
+                                    <p className="text-white font-semibold text-lg">
+                                      {item.ShipmentMode || "N/A"}
+                                    </p>
+                                  </div>
+
+                                  {/* City Name */}
+                                  <div className="bg-slate-800/50 rounded-lg p-3">
+                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        City Name
+                                      </span>
+                                    </div>
+                                    <p className="text-white font-semibold text-lg">
+                                      {item.CityName || "N/A"}
+                                    </p>
+                                  </div>
                                 </div>
-                              </div>
-                            </motion.div>
-                          ))}
+
+                                {/* State Name */}
+                                <div className="mb-4">
+                                  <div className="bg-slate-800/50 rounded-lg p-3">
+                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        State Name
+                                      </span>
+                                    </div>
+                                    <p className="text-white font-semibold text-lg">
+                                      {item.StateName || "N/A"}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                {/* Date and Time Information */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-600/50">
+                                  {/* Created At */}
+                                  <div className="bg-slate-800/50 rounded-lg p-3">
+                                    <div className="flex items-center text-sm text-slate-300 mb-2">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        Created At
+                                      </span>
+                                    </div>
+                                    <div className="text-white">
+                                      <div className="font-semibold">
+                                        {createdDate}
+                                      </div>
+                                      <div className="text-sm text-slate-300">
+                                        {createdTime}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Updated At */}
+                                  <div className="bg-slate-800/50 rounded-lg p-3">
+                                    <div className="flex items-center text-sm text-slate-300 mb-2">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">
+                                        Updated At
+                                      </span>
+                                    </div>
+                                    <div className="text-white">
+                                      <div className="font-semibold">
+                                        {updatedDate}
+                                      </div>
+                                      <div className="text-sm text-slate-300">
+                                        {updatedTime}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            );
+                          })}
                         </div>
                       </motion.div>
                     )}
