@@ -173,7 +173,8 @@ const PurpleDroneTracking = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
+      {/* Mobile Layout */}
+      <div className="block lg:hidden max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Mobile-Optimized Search Form */}
         <motion.div
           className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6 mb-4 sm:mb-6"
@@ -416,54 +417,112 @@ const PurpleDroneTracking = () => {
                         </div>
                         Package Information
                       </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                            Customer
+                      {/* Mobile Layout: Single column */}
+                      <div className="block lg:hidden">
+                        <div className="grid grid-cols-1 gap-3">
+                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                              Customer
+                            </div>
+                            <div className="font-semibold text-gray-900 text-sm sm:text-base break-words">
+                              {orderData?.CustomerName || "N/A"}
+                            </div>
                           </div>
-                          <div className="font-semibold text-gray-900 text-sm sm:text-base break-words">
-                            {orderData?.CustomerName || "N/A"}
+                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                              Address
+                            </div>
+                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                              {orderData?.DeliveryCity || "N/A"},{" "}
+                              {orderData?.CustomerDeliveryPincode || "N/A"}
+                            </div>
+                          </div>
+                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                              Shipper
+                            </div>
+                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                              {Client || "N/A"}
+                            </div>
+                          </div>
+                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                              Order Number
+                            </div>
+                            <div className="font-mono text-xs sm:text-sm text-gray-900 break-all">
+                              {orderData?.OrderNumber || "N/A"}
+                            </div>
+                          </div>
+                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                              Amount
+                            </div>
+                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                              INR {orderData?.Amount || "N/A"}
+                            </div>
+                          </div>
+                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                              Payment
+                            </div>
+                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                              {orderData?.PaymentType || "N/A"}
+                            </div>
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                            Address
+                      </div>
+
+                      {/* Desktop Layout: 3 columns */}
+                      <div className="hidden lg:block">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <div className="text-sm text-gray-600 mb-1">
+                              Customer
+                            </div>
+                            <div className="font-semibold text-gray-900 text-base break-words">
+                              {orderData?.CustomerName || "N/A"}
+                            </div>
                           </div>
-                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                            {orderData?.DeliveryCity || "N/A"},{" "}
-                            {orderData?.CustomerDeliveryPincode || "N/A"}
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <div className="text-sm text-gray-600 mb-1">
+                              Address
+                            </div>
+                            <div className="font-semibold text-gray-900 text-base">
+                              {orderData?.DeliveryCity || "N/A"},{" "}
+                              {orderData?.CustomerDeliveryPincode || "N/A"}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                            Shipper
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <div className="text-sm text-gray-600 mb-1">
+                              Shipper
+                            </div>
+                            <div className="font-semibold text-gray-900 text-base">
+                              {Client || "N/A"}
+                            </div>
                           </div>
-                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                            {Client || "N/A"}
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <div className="text-sm text-gray-600 mb-1">
+                              Order Number
+                            </div>
+                            <div className="font-mono text-sm text-gray-900 break-all">
+                              {orderData?.OrderNumber || "N/A"}
+                            </div>
                           </div>
-                        </div>
-                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                            Order Number
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <div className="text-sm text-gray-600 mb-1">
+                              Amount
+                            </div>
+                            <div className="font-semibold text-gray-900 text-base">
+                              INR {orderData?.Amount || "N/A"}
+                            </div>
                           </div>
-                          <div className="font-mono text-xs sm:text-sm text-gray-900 break-all">
-                            {orderData?.OrderNumber || "N/A"}
-                          </div>
-                        </div>
-                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                            Amount
-                          </div>
-                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                            INR {orderData?.Amount || "N/A"}
-                          </div>
-                        </div>
-                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                            Payment
-                          </div>
-                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                            {orderData?.PaymentType || "N/A"}
+                          <div className="bg-gray-50 rounded-lg p-4">
+                            <div className="text-sm text-gray-600 mb-1">
+                              Payment
+                            </div>
+                            <div className="font-semibold text-gray-900 text-base">
+                              {orderData?.PaymentType || "N/A"}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -765,6 +824,529 @@ const PurpleDroneTracking = () => {
               Ready to Track
             </h3>
             <p className="text-gray-600 text-sm sm:text-base lg:text-lg px-4">
+              Enter your AWB number above to get started with PurpleDrone
+              tracking
+            </p>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden lg:block max-w-7xl mx-auto px-8 py-8">
+        {/* Desktop Search Form */}
+        <motion.div
+          className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <form onSubmit={handleTrack} className="space-y-6">
+            <div>
+              <label
+                htmlFor="trackingNumber"
+                className="block text-lg font-semibold text-gray-700 mb-3"
+              >
+                Enter AWB Number
+              </label>
+              <input
+                type="text"
+                id="trackingNumber"
+                value={trackingNumber}
+                onChange={(e) => setTrackingNumber(e.target.value)}
+                placeholder="Enter your AWB number (e.g., PRD008032113P)"
+                className="w-full px-6 py-4 border-2 border-purple-200 rounded-xl focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 text-base bg-purple-50/50"
+              />
+            </div>
+            <motion.button
+              type="submit"
+              disabled={isLoading || !trackingNumber.trim()}
+              className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:transform-none disabled:shadow-none flex items-center justify-center space-x-3"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {isLoading ? (
+                <>
+                  <svg
+                    className="w-6 h-6 animate-spin"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    />
+                  </svg>
+                  <span>Tracking...</span>
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <span>Track Package</span>
+                </>
+              )}
+            </motion.button>
+          </form>
+        </motion.div>
+
+        {/* Desktop Error Message */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              className="bg-red-50 border border-red-200 rounded-2xl p-8 mb-8"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="flex items-center">
+                <svg
+                  className="w-8 h-8 text-red-500 mr-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span className="text-red-800 font-medium text-xl">
+                  {error}
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Desktop Loading State */}
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div
+              className="bg-white rounded-3xl shadow-xl border border-purple-100 p-16 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+            >
+              <motion.div
+                className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              >
+                <svg
+                  className="w-12 h-12 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  />
+                </svg>
+              </motion.div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Tracking Your Package
+              </h3>
+              <p className="text-gray-600 text-lg">
+                Please wait while we fetch the latest information from
+                PurpleDrone...
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Desktop Tracking Results */}
+        <AnimatePresence>
+          {trackingData && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              {(() => {
+                const { data } = trackingData;
+                const { orderData, histData, narvarData, Client, status } =
+                  data;
+                const latestEvent =
+                  histData && histData.length > 0 ? histData[0] : null;
+
+                return (
+                  <div className="space-y-8">
+                    {/* Desktop Status Header */}
+                    <motion.div
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h2 className="text-3xl font-bold mb-2">
+                            AWB: {latestEvent?.AWBNumber || "N/A"}
+                          </h2>
+                          <p className="text-purple-100 text-lg">
+                            Last Updated:{" "}
+                            {formatTrackingDate(latestEvent?.CreatedAt).date},{" "}
+                            {formatTrackingDate(latestEvent?.CreatedAt).time}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center space-x-3 mb-2">
+                            <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                            <span className="text-2xl font-bold">
+                              {status || "N/A"}
+                            </span>
+                          </div>
+                          <p className="text-purple-100 text-lg">
+                            Current Status
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Desktop Package Information */}
+                    <motion.div
+                      className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                          <svg
+                            className="w-5 h-5 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+                          </svg>
+                        </div>
+                        Package Information
+                      </h3>
+                      <div className="grid grid-cols-3 gap-6">
+                        <div className="bg-gray-50 rounded-xl p-6">
+                          <div className="text-sm text-gray-600 mb-2">
+                            Customer
+                          </div>
+                          <div className="font-semibold text-gray-900 text-lg break-words">
+                            {orderData?.CustomerName || "N/A"}
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-6">
+                          <div className="text-sm text-gray-600 mb-2">
+                            Address
+                          </div>
+                          <div className="font-semibold text-gray-900 text-lg">
+                            {orderData?.DeliveryCity || "N/A"},{" "}
+                            {orderData?.CustomerDeliveryPincode || "N/A"}
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-6">
+                          <div className="text-sm text-gray-600 mb-2">
+                            Shipper
+                          </div>
+                          <div className="font-semibold text-gray-900 text-lg">
+                            {Client || "N/A"}
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-6">
+                          <div className="text-sm text-gray-600 mb-2">
+                            Order Number
+                          </div>
+                          <div className="font-mono text-sm text-gray-900 break-all">
+                            {orderData?.OrderNumber || "N/A"}
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-6">
+                          <div className="text-sm text-gray-600 mb-2">
+                            Amount
+                          </div>
+                          <div className="font-semibold text-gray-900 text-lg">
+                            INR {orderData?.Amount || "N/A"}
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 rounded-xl p-6">
+                          <div className="text-sm text-gray-600 mb-2">
+                            Payment
+                          </div>
+                          <div className="font-semibold text-gray-900 text-lg">
+                            {orderData?.PaymentType || "N/A"}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Desktop Track History */}
+                    <motion.div
+                      className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                          <svg
+                            className="w-5 h-5 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </div>
+                        Delivery Timeline
+                      </h3>
+                      <div className="space-y-6">
+                        {histData && histData.length > 0 ? (
+                          histData.map((event, index) => {
+                            const { date, time } = formatTrackingDate(
+                              event.CreatedAt
+                            );
+                            return (
+                              <motion.div
+                                key={index}
+                                className="flex items-start space-x-6 p-6 bg-gray-50 rounded-xl"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                              >
+                                <div className="flex-shrink-0">
+                                  <div
+                                    className={`w-6 h-6 rounded-full ${
+                                      index === 0
+                                        ? "bg-green-500"
+                                        : index === histData.length - 1
+                                        ? "bg-gray-400"
+                                        : "bg-purple-500"
+                                    }`}
+                                  ></div>
+                                  {index < histData.length - 1 && (
+                                    <div className="w-px h-12 bg-purple-300 ml-3 mt-2"></div>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center justify-between mb-3">
+                                    <h4 className="text-lg font-semibold text-gray-900">
+                                      {event.Remarks}
+                                    </h4>
+                                    <span
+                                      className={`px-4 py-2 rounded-full text-sm font-medium border ${
+                                        index === 0
+                                          ? "bg-green-100 text-green-800 border-green-200"
+                                          : "bg-gray-100 text-gray-800 border-gray-200"
+                                      }`}
+                                    >
+                                      {event.Status || "N/A"}
+                                    </span>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                    <div className="flex items-center">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-purple-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">Date:</span>{" "}
+                                      <span>{date}</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-purple-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">Time:</span>{" "}
+                                      <span>{time}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            );
+                          })
+                        ) : (
+                          <div className="text-center py-12">
+                            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                              <svg
+                                className="w-8 h-8 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                            </div>
+                            <p className="text-gray-500 text-lg">
+                              No tracking history available
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+
+                    {/* Desktop Status Details */}
+                    {narvarData && narvarData.length > 0 && (
+                      <motion.div
+                        className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <svg
+                              className="w-5 h-5 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                          </div>
+                          Status Details
+                        </h3>
+                        <div className="grid grid-cols-1 gap-6">
+                          {narvarData.map((item, index) => (
+                            <motion.div
+                              key={index}
+                              className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                            >
+                              <div className="grid grid-cols-3 gap-6">
+                                <div>
+                                  <span className="text-gray-600 font-medium">
+                                    Status:
+                                  </span>
+                                  <p className="text-gray-900 font-semibold text-lg">
+                                    {item.Status}
+                                  </p>
+                                </div>
+                                <div>
+                                  <span className="text-gray-600 font-medium">
+                                    Mode:
+                                  </span>
+                                  <p className="text-gray-900 font-semibold text-lg">
+                                    {item.ShipmentMode}
+                                  </p>
+                                </div>
+                                <div>
+                                  <span className="text-gray-600 font-medium">
+                                    Location:
+                                  </span>
+                                  <p className="text-gray-900 font-semibold text-lg break-words">
+                                    {item.LocationName ||
+                                      item.CityName ||
+                                      "N/A"}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="pt-4 border-t border-purple-200">
+                                <div className="text-sm text-gray-500 space-y-1">
+                                  <div>
+                                    Created: {formatDate(item.CreatedAt)}
+                                  </div>
+                                  {item.DeliveryDate && (
+                                    <div>
+                                      Expected: {formatDate(item.DeliveryDate)}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                );
+              })()}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Desktop No Results State */}
+        {!isLoading && !trackingData && !error && (
+          <motion.div
+            className="bg-white rounded-3xl shadow-xl border border-purple-100 p-16 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">
+              <svg
+                className="w-12 h-12 text-purple-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Ready to Track
+            </h3>
+            <p className="text-gray-600 text-lg">
               Enter your AWB number above to get started with PurpleDrone
               tracking
             </p>
