@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import { courierServices, getTrackingUrl } from "../data/courierServices";
-import { trackPackage, getMockTrackingData } from "../services/purpleDroneApi";
+import { trackPackage } from "../services/purpleDroneApi";
 import TrackingResults from "./TrackingResults";
 
 const TrackingForm = () => {
@@ -13,7 +13,7 @@ const TrackingForm = () => {
   const [toastType, setToastType] = useState("success");
   const [trackingResults, setTrackingResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
-  const [useMockData, setUseMockData] = useState(true); // Set to false for production
+
 
   const heroRef = useRef(null);
   const statsRef = useRef(null);
@@ -35,14 +35,8 @@ const TrackingForm = () => {
     setTrackingResults(null);
 
     try {
-      let result;
-      if (useMockData) {
-        // Use mock data for development/demo
-        result = await getMockTrackingData(trackingNumber);
-      } else {
-        // Use real API
-        result = await trackPackage(trackingNumber);
-      }
+      // Use real API only
+      const result = await trackPackage(trackingNumber);
 
       if (result.success) {
         setTrackingResults(result);
