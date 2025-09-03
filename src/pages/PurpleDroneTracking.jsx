@@ -86,19 +86,28 @@ const PurpleDroneTracking = () => {
 
       // Handle different date formats from API
       let date;
+
+      // Handle format like "September 03, 2025, 16:30 PM"
       if (
         dateString.includes("September") ||
         dateString.includes("AM") ||
         dateString.includes("PM")
       ) {
-        // Handle format like "September 03, 2025, 07:06 AM"
-        date = new Date(dateString);
+        // Clean up the date string - remove extra spaces and fix format
+        let cleanDateString = dateString.trim();
+
+        // Handle the specific format: "September 03, 2025, 16:30 PM"
+        // Convert to proper format: "September 03, 2025 16:30 PM"
+        cleanDateString = cleanDateString.replace(/, (\d{2}:\d{2})/, " $1");
+
+        date = new Date(cleanDateString);
       } else {
         // Handle ISO format like "2025-09-03T05:15:17.208929"
         date = new Date(dateString);
       }
 
       if (isNaN(date.getTime())) {
+        console.log("Failed to parse date:", dateString);
         return { date: "N/A", time: "N/A" };
       }
 
@@ -116,6 +125,7 @@ const PurpleDroneTracking = () => {
         }),
       };
     } catch (error) {
+      console.log("Date parsing error:", error, "for date:", dateString);
       return { date: "N/A", time: "N/A" };
     }
   };
@@ -543,26 +553,7 @@ const PurpleDroneTracking = () => {
                                   </div>
 
                                   {/* Date and Time */}
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-300">
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">Date:</span>{" "}
-                                      <span className="ml-1 text-white">
-                                        {date}
-                                      </span>
-                                    </div>
+                                  <div className="text-sm text-slate-300">
                                     <div className="flex items-center">
                                       <svg
                                         className="w-4 h-4 mr-2 text-emerald-500"
@@ -577,9 +568,11 @@ const PurpleDroneTracking = () => {
                                           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                                         />
                                       </svg>
-                                      <span className="font-medium">Time:</span>{" "}
-                                      <span className="ml-1 text-white">
-                                        {time}
+                                      <span className="font-medium">
+                                        Date & Time:
+                                      </span>{" "}
+                                      <span className="ml-1 text-white font-semibold">
+                                        {time} {date}
                                       </span>
                                     </div>
                                   </div>
@@ -694,13 +687,13 @@ const PurpleDroneTracking = () => {
                                   </span>
                                 </div>
 
-                                {/* Main Details Grid */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                                {/* Compact Details Grid */}
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
                                   {/* Location Name */}
-                                  <div className="bg-slate-800/50 rounded-lg p-3">
-                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                  <div className="bg-slate-800/50 rounded-lg p-2">
+                                    <div className="flex items-center text-xs text-slate-300 mb-1">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        className="w-3 h-3 mr-1 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -719,19 +712,19 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">
-                                        Location Name
+                                        Location
                                       </span>
                                     </div>
-                                    <p className="text-white font-semibold text-lg break-words">
+                                    <p className="text-white font-semibold text-sm break-words">
                                       {item.LocationName || "N/A"}
                                     </p>
                                   </div>
 
                                   {/* Shipment Mode */}
-                                  <div className="bg-slate-800/50 rounded-lg p-3">
-                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                  <div className="bg-slate-800/50 rounded-lg p-2">
+                                    <div className="flex items-center text-xs text-slate-300 mb-1">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        className="w-3 h-3 mr-1 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -743,20 +736,18 @@ const PurpleDroneTracking = () => {
                                           d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                                         />
                                       </svg>
-                                      <span className="font-medium">
-                                        Shipment Mode
-                                      </span>
+                                      <span className="font-medium">Mode</span>
                                     </div>
-                                    <p className="text-white font-semibold text-lg">
+                                    <p className="text-white font-semibold text-sm">
                                       {item.ShipmentMode || "N/A"}
                                     </p>
                                   </div>
 
                                   {/* City Name */}
-                                  <div className="bg-slate-800/50 rounded-lg p-3">
-                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                  <div className="bg-slate-800/50 rounded-lg p-2">
+                                    <div className="flex items-center text-xs text-slate-300 mb-1">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        className="w-3 h-3 mr-1 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -768,22 +759,18 @@ const PurpleDroneTracking = () => {
                                           d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                                         />
                                       </svg>
-                                      <span className="font-medium">
-                                        City Name
-                                      </span>
+                                      <span className="font-medium">City</span>
                                     </div>
-                                    <p className="text-white font-semibold text-lg">
+                                    <p className="text-white font-semibold text-sm">
                                       {item.CityName || "N/A"}
                                     </p>
                                   </div>
-                                </div>
 
-                                {/* State Name */}
-                                <div className="mb-4">
-                                  <div className="bg-slate-800/50 rounded-lg p-3">
-                                    <div className="flex items-center text-sm text-slate-300 mb-1">
+                                  {/* State Name */}
+                                  <div className="bg-slate-800/50 rounded-lg p-2">
+                                    <div className="flex items-center text-xs text-slate-300 mb-1">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        className="w-3 h-3 mr-1 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -795,23 +782,21 @@ const PurpleDroneTracking = () => {
                                           d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                         />
                                       </svg>
-                                      <span className="font-medium">
-                                        State Name
-                                      </span>
+                                      <span className="font-medium">State</span>
                                     </div>
-                                    <p className="text-white font-semibold text-lg">
+                                    <p className="text-white font-semibold text-sm">
                                       {item.StateName || "N/A"}
                                     </p>
                                   </div>
                                 </div>
 
-                                {/* Date and Time Information */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-600/50">
+                                {/* Date and Time Information - Compact */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-600/50">
                                   {/* Created At */}
-                                  <div className="bg-slate-800/50 rounded-lg p-3">
-                                    <div className="flex items-center text-sm text-slate-300 mb-2">
+                                  <div className="bg-slate-800/50 rounded-lg p-2">
+                                    <div className="flex items-center text-xs text-slate-300 mb-1">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        className="w-3 h-3 mr-1 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -824,24 +809,19 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">
-                                        Created At
+                                        Created
                                       </span>
                                     </div>
-                                    <div className="text-white">
-                                      <div className="font-semibold">
-                                        {createdDate}
-                                      </div>
-                                      <div className="text-sm text-slate-300">
-                                        {createdTime}
-                                      </div>
+                                    <div className="text-white text-sm font-semibold">
+                                      {createdTime} {createdDate}
                                     </div>
                                   </div>
 
                                   {/* Updated At */}
-                                  <div className="bg-slate-800/50 rounded-lg p-3">
-                                    <div className="flex items-center text-sm text-slate-300 mb-2">
+                                  <div className="bg-slate-800/50 rounded-lg p-2">
+                                    <div className="flex items-center text-xs text-slate-300 mb-1">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        className="w-3 h-3 mr-1 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -854,16 +834,11 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">
-                                        Updated At
+                                        Updated
                                       </span>
                                     </div>
-                                    <div className="text-white">
-                                      <div className="font-semibold">
-                                        {updatedDate}
-                                      </div>
-                                      <div className="text-sm text-slate-300">
-                                        {updatedTime}
-                                      </div>
+                                    <div className="text-white text-sm font-semibold">
+                                      {updatedTime} {updatedDate}
                                     </div>
                                   </div>
                                 </div>
