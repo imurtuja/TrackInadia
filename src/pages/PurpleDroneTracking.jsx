@@ -11,7 +11,6 @@ const PurpleDroneTracking = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [trackingData, setTrackingData] = useState(null);
   const [error, setError] = useState(null);
-  // Removed demo mode - using real API only
 
   useEffect(() => {
     // SEO Optimization for PurpleDrone Tracking
@@ -48,52 +47,34 @@ const PurpleDroneTracking = () => {
         price: "0",
         priceCurrency: "USD",
       },
-      provider: {
-        "@type": "Organization",
-        name: "TrackIndia",
-        url: "https://trackindia.vercel.app",
-      },
     };
 
     const script = document.createElement("script");
     script.type = "application/ld+json";
-    script.text = JSON.stringify(structuredData);
+    script.textContent = JSON.stringify(structuredData);
     document.head.appendChild(script);
 
     return () => {
       // Cleanup
-      const existingScript = document.querySelector(
-        'script[type="application/ld+json"]'
-      );
-      if (existingScript) {
-        existingScript.remove();
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
   }, []);
 
   const handleTrack = async (e) => {
     e.preventDefault();
-    if (!trackingNumber.trim()) {
-      setError("Please enter a tracking number");
-      return;
-    }
+    if (!trackingNumber.trim()) return;
 
     setIsLoading(true);
     setError(null);
     setTrackingData(null);
 
     try {
-      // Always use real API - no demo mode
       const result = await trackPackage(trackingNumber);
-
-      if (result.success) {
-        setTrackingData(result.data);
-      } else {
-        setError(result.error || "Failed to track package");
-      }
-    } catch (error) {
-      console.error("Tracking error:", error);
-      setError("An error occurred while tracking your package");
+      setTrackingData(result);
+    } catch (err) {
+      setError(err.message || "Failed to track package. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -121,190 +102,23 @@ const PurpleDroneTracking = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
-      {/* Mobile-Optimized Header */}
-      <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white shadow-xl">
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-          <div className="flex flex-col items-center text-center">
-            <motion.div
-              className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-xl mb-3 sm:mb-4 backdrop-blur-sm"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <svg
-                className="w-6 h-6 sm:w-8 sm:h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
-              </svg>
-            </motion.div>
-            <motion.h1
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 px-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              PurpleDrone Package Tracking
-            </motion.h1>
-            <motion.p
-              className="text-sm sm:text-base lg:text-lg text-purple-100 max-w-2xl px-4 mb-4 sm:mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              Track your drone delivery packages with real-time updates and
-              detailed tracking information
-            </motion.p>
-            <div className="flex items-center space-x-3 bg-white/20 rounded-xl px-3 sm:px-4 py-2 sm:py-3 backdrop-blur-sm">
-              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs sm:text-sm font-medium">
-                Live Tracking
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Layout */}
-      <div className="block lg:hidden max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
-        {/* Mobile-Optimized Search Form */}
-        <motion.div
-          className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6 mb-4 sm:mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <form onSubmit={handleTrack} className="space-y-4">
-            <div>
-              <label
-                htmlFor="trackingNumber"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Enter AWB Number
-              </label>
-              <input
-                type="text"
-                id="trackingNumber"
-                value={trackingNumber}
-                onChange={(e) => setTrackingNumber(e.target.value)}
-                placeholder="Enter your AWB number (e.g., PRD008032113P)"
-                className="w-full px-3 sm:px-4 py-3 border-2 border-purple-200 rounded-lg sm:rounded-xl focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 text-sm sm:text-base bg-purple-50/50"
-              />
-            </div>
-            <motion.button
-              type="submit"
-              disabled={isLoading || !trackingNumber.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 sm:px-8 py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:transform-none disabled:shadow-none flex items-center justify-center space-x-2"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {isLoading ? (
-                <>
-                  <motion.svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: 1,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </motion.svg>
-                  <span>Tracking...</span>
-                </>
-              ) : (
-                <>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                  <span>Track Package</span>
-                </>
-              )}
-            </motion.button>
-          </form>
-        </motion.div>
-
-        {/* Error Message */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <div className="flex items-center">
-                <svg
-                  className="w-6 h-6 text-red-500 mr-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span className="text-red-800 font-medium text-lg">
-                  {error}
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Mobile-Optimized Loading State */}
-        <AnimatePresence>
-          {isLoading && (
-            <motion.div
-              className="bg-white rounded-xl sm:rounded-3xl shadow-xl border border-purple-100 p-8 sm:p-12 lg:p-16 text-center"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-            >
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Header Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/10 via-teal-600/10 to-cyan-600/10"></div>
+        <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-400/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-teal-400/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+        <div className="relative text-white shadow-xl">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="text-center">
               <motion.div
-                className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-6 backdrop-blur-sm"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <svg
-                  className="w-8 h-8 sm:w-10 sm:h-10 text-white"
+                  className="w-8 h-8 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -317,10 +131,166 @@ const PurpleDroneTracking = () => {
                   />
                 </svg>
               </motion.div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
+              <motion.h1
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                PurpleDrone Tracking
+              </motion.h1>
+              <motion.p
+                className="text-lg sm:text-xl text-emerald-100 max-w-3xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                Track your drone delivery packages with real-time updates and
+                detailed tracking information
+              </motion.p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Search Form */}
+        <motion.div
+          className="bg-slate-800/60 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-700/50 p-6 sm:p-8 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <form onSubmit={handleTrack} className="space-y-6">
+            <div>
+              <label
+                htmlFor="trackingNumber"
+                className="block text-lg font-semibold text-slate-200 mb-3"
+              >
+                Enter AWB Number
+              </label>
+              {/* Mobile: Stacked layout, Desktop: Input and button in same row */}
+              <div className="flex flex-col lg:flex-row gap-4">
+                <input
+                  type="text"
+                  id="trackingNumber"
+                  value={trackingNumber}
+                  onChange={(e) => setTrackingNumber(e.target.value)}
+                  placeholder="Enter your AWB number (e.g., PRD008032113P)"
+                  className="flex-1 px-4 py-3 border-2 border-slate-600 rounded-xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 text-base bg-slate-700/50 backdrop-blur-sm text-white placeholder-slate-400"
+                />
+                <motion.button
+                  type="submit"
+                  disabled={isLoading || !trackingNumber.trim()}
+                  className="lg:w-auto w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:from-emerald-600 hover:to-teal-700 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:transform-none disabled:shadow-none flex items-center justify-center space-x-3"
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                >
+                  {isLoading ? (
+                    <>
+                      <svg
+                        className="w-5 h-5 animate-spin"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                        />
+                      </svg>
+                      <span>Tracking...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                      <span>Track Package</span>
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </div>
+          </form>
+        </motion.div>
+
+        {/* Error Message */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 mb-8 backdrop-blur-sm"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="flex items-center">
+                <svg
+                  className="w-6 h-6 text-red-400 mr-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span className="text-red-300 font-medium text-lg">
+                  {error}
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Loading State */}
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div
+              className="bg-slate-800/60 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-700/50 p-12 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+            >
+              <motion.div
+                className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              >
+                <svg
+                  className="w-10 h-10 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  />
+                </svg>
+              </motion.div>
+              <h3 className="text-xl font-bold text-white mb-3">
                 Tracking Your Package
               </h3>
-              <p className="text-gray-600 text-sm sm:text-base lg:text-lg px-4">
+              <p className="text-slate-300 text-lg">
                 Please wait while we fetch the latest information from
                 PurpleDrone...
               </p>
@@ -335,652 +305,7 @@ const PurpleDroneTracking = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-            >
-              {(() => {
-                const { data } = trackingData;
-                const { orderData, histData, narvarData, Client, status } =
-                  data;
-                const latestEvent =
-                  histData && histData.length > 0 ? histData[0] : null;
-
-                return (
-                  <div className="space-y-6">
-                    {/* Mobile-Optimized Status Header */}
-                    <motion.div
-                      className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 overflow-hidden"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 }}
-                    >
-                      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-4 sm:p-6 text-white">
-                        <div className="text-center">
-                          <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 break-all">
-                            AWB: {latestEvent?.AWBNumber || "N/A"}
-                          </h2>
-                          {latestEvent && (
-                            <p className="text-purple-100 text-xs sm:text-sm mb-4">
-                              Last Updated: {latestEvent.CreatedAt}
-                            </p>
-                          )}
-                          <div className="flex items-center justify-center space-x-3 bg-white/20 rounded-xl px-3 sm:px-4 py-2 sm:py-3 backdrop-blur-sm">
-                            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white/30 rounded-full flex items-center justify-center">
-                              <svg
-                                className="w-3 h-3 sm:w-4 sm:h-4 text-white"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <div className="text-base sm:text-lg font-bold">
-                                {status || "N/A"}
-                              </div>
-                              <div className="text-purple-100 text-xs">
-                                Current Status
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    {/* Mobile-Optimized Package Information */}
-                    <motion.div
-                      className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
-                          <svg
-                            className="w-3 h-3 sm:w-4 sm:h-4 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                            />
-                          </svg>
-                        </div>
-                        Package Information
-                      </h3>
-                      {/* Mobile Layout: Single column */}
-                      <div className="block lg:hidden">
-                        <div className="grid grid-cols-1 gap-3">
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                              Customer
-                            </div>
-                            <div className="font-semibold text-gray-900 text-sm sm:text-base break-words">
-                              {orderData?.CustomerName || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                              Address
-                            </div>
-                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                              {orderData?.DeliveryCity || "N/A"},{" "}
-                              {orderData?.CustomerDeliveryPincode || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                              Shipper
-                            </div>
-                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                              {Client || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                              Order Number
-                            </div>
-                            <div className="font-mono text-xs sm:text-sm text-gray-900 break-all">
-                              {orderData?.OrderNumber || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                              Amount
-                            </div>
-                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                              INR {orderData?.Amount || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xs sm:text-sm text-gray-600 mb-1">
-                              Payment
-                            </div>
-                            <div className="font-semibold text-gray-900 text-sm sm:text-base">
-                              {orderData?.PaymentType || "N/A"}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Desktop Layout: 3 columns */}
-                      <div className="hidden lg:block">
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <div className="text-sm text-gray-600 mb-1">
-                              Customer
-                            </div>
-                            <div className="font-semibold text-gray-900 text-base break-words">
-                              {orderData?.CustomerName || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <div className="text-sm text-gray-600 mb-1">
-                              Address
-                            </div>
-                            <div className="font-semibold text-gray-900 text-base">
-                              {orderData?.DeliveryCity || "N/A"},{" "}
-                              {orderData?.CustomerDeliveryPincode || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <div className="text-sm text-gray-600 mb-1">
-                              Shipper
-                            </div>
-                            <div className="font-semibold text-gray-900 text-base">
-                              {Client || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <div className="text-sm text-gray-600 mb-1">
-                              Order Number
-                            </div>
-                            <div className="font-mono text-sm text-gray-900 break-all">
-                              {orderData?.OrderNumber || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <div className="text-sm text-gray-600 mb-1">
-                              Amount
-                            </div>
-                            <div className="font-semibold text-gray-900 text-base">
-                              INR {orderData?.Amount || "N/A"}
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 rounded-lg p-4">
-                            <div className="text-sm text-gray-600 mb-1">
-                              Payment
-                            </div>
-                            <div className="font-semibold text-gray-900 text-base">
-                              {orderData?.PaymentType || "N/A"}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    {/* Mobile-Optimized Track History */}
-                    <motion.div
-                      className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                    >
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
-                          <svg
-                            className="w-3 h-3 sm:w-4 sm:h-4 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                        </div>
-                        Delivery Timeline
-                      </h3>
-                      <div className="space-y-3 sm:space-y-4">
-                        {histData && histData.length > 0 ? (
-                          histData.map((event, index) => {
-                            const { date, time } = formatTrackingDate(
-                              event.CreatedAt
-                            );
-                            return (
-                              <motion.div
-                                key={index}
-                                className="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.5 + index * 0.1 }}
-                              >
-                                <div className="flex-shrink-0">
-                                  <div
-                                    className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${
-                                      index === 0
-                                        ? "bg-emerald-500"
-                                        : "bg-purple-400"
-                                    } flex items-center justify-center`}
-                                  >
-                                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full"></div>
-                                  </div>
-                                  {index < histData.length - 1 && (
-                                    <div className="w-px h-6 sm:h-8 bg-purple-300 ml-1.5 sm:ml-2 mt-1"></div>
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
-                                    <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
-                                      {event.Remarks}
-                                    </h4>
-                                    <span
-                                      className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(
-                                        event.Remarks
-                                      )} self-start sm:self-auto`}
-                                    >
-                                      {event.Status || "N/A"}
-                                    </span>
-                                  </div>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-600">
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">Date:</span>{" "}
-                                      <span className="truncate">{date}</span>
-                                    </div>
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">Time:</span>{" "}
-                                      <span className="truncate">{time}</span>
-                                    </div>
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                        />
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">
-                                        Location:
-                                      </span>{" "}
-                                      <span className="truncate">
-                                        {event.userlocation}
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">By:</span>{" "}
-                                      <span className="truncate">
-                                        {event.createdBy}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            );
-                          })
-                        ) : (
-                          <p className="text-gray-500 text-center py-8">
-                            No tracking history available
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-
-                    {/* Mobile-Optimized Status Details */}
-                    {narvarData && narvarData.length > 0 && (
-                      <motion.div
-                        className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                      >
-                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
-                          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
-                            <svg
-                              className="w-3 h-3 sm:w-4 sm:h-4 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                              />
-                            </svg>
-                          </div>
-                          Status Details
-                        </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                          {narvarData.map((item, index) => (
-                            <motion.div
-                              key={item.id || index}
-                              className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-purple-200"
-                              initial={{ opacity: 0, scale: 0.95 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.7 + index * 0.1 }}
-                            >
-                              <div className="space-y-2 sm:space-y-3">
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                  <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
-                                    Status
-                                  </h4>
-                                  <span
-                                    className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(
-                                      item.Status
-                                    )} self-start sm:self-auto`}
-                                  >
-                                    {item.Status}
-                                  </span>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
-                                  <div>
-                                    <span className="text-gray-600 font-medium">
-                                      Code:
-                                    </span>
-                                    <p className="font-mono text-gray-900 font-semibold break-all">
-                                      {item.StatusCode}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <span className="text-gray-600 font-medium">
-                                      Mode:
-                                    </span>
-                                    <p className="text-gray-900 font-semibold">
-                                      {item.ShipmentMode}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <span className="text-gray-600 font-medium">
-                                      Location:
-                                    </span>
-                                    <p className="text-gray-900 font-semibold break-words">
-                                      {item.LocationName ||
-                                        item.CityName ||
-                                        "N/A"}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <span className="text-gray-600 font-medium">
-                                      State:
-                                    </span>
-                                    <p className="text-gray-900 font-semibold break-words">
-                                      {item.StateName || "N/A"}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="pt-2 border-t border-purple-200">
-                                  <div className="text-xs text-gray-500 space-y-1">
-                                    <div className="break-words">
-                                      Created: {formatDate(item.CreatedAt)}
-                                    </div>
-                                    {item.DeliveryDate && (
-                                      <div className="break-words">
-                                        Expected:{" "}
-                                        {formatDate(item.DeliveryDate)}
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-                );
-              })()}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Mobile-Optimized No Results State */}
-        {!isLoading && !trackingData && !error && (
-          <motion.div
-            className="bg-white rounded-xl sm:rounded-3xl shadow-xl border border-purple-100 p-8 sm:p-12 lg:p-16 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto mb-6 sm:mb-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">
-              <svg
-                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-purple-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
-              Ready to Track
-            </h3>
-            <p className="text-gray-600 text-sm sm:text-base lg:text-lg px-4">
-              Enter your AWB number above to get started with PurpleDrone
-              tracking
-            </p>
-          </motion.div>
-        )}
-      </div>
-
-      {/* Desktop Layout */}
-      <div className="hidden lg:block max-w-7xl mx-auto px-8 py-8">
-        {/* Desktop Search Form */}
-        <motion.div
-          className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <form onSubmit={handleTrack} className="space-y-6">
-            <div>
-              <label
-                htmlFor="trackingNumber"
-                className="block text-lg font-semibold text-gray-700 mb-3"
-              >
-                Enter AWB Number
-              </label>
-              <input
-                type="text"
-                id="trackingNumber"
-                value={trackingNumber}
-                onChange={(e) => setTrackingNumber(e.target.value)}
-                placeholder="Enter your AWB number (e.g., PRD008032113P)"
-                className="w-full px-6 py-4 border-2 border-purple-200 rounded-xl focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 text-base bg-purple-50/50"
-              />
-            </div>
-            <motion.button
-              type="submit"
-              disabled={isLoading || !trackingNumber.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:transform-none disabled:shadow-none flex items-center justify-center space-x-3"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {isLoading ? (
-                <>
-                  <svg
-                    className="w-6 h-6 animate-spin"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                    />
-                  </svg>
-                  <span>Tracking...</span>
-                </>
-              ) : (
-                <>
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                  <span>Track Package</span>
-                </>
-              )}
-            </motion.button>
-          </form>
-        </motion.div>
-
-        {/* Desktop Error Message */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              className="bg-red-50 border border-red-200 rounded-2xl p-8 mb-8"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <div className="flex items-center">
-                <svg
-                  className="w-8 h-8 text-red-500 mr-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span className="text-red-800 font-medium text-xl">
-                  {error}
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Desktop Loading State */}
-        <AnimatePresence>
-          {isLoading && (
-            <motion.div
-              className="bg-white rounded-3xl shadow-xl border border-purple-100 p-16 text-center"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-            >
-              <motion.div
-                className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              >
-                <svg
-                  className="w-12 h-12 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                  />
-                </svg>
-              </motion.div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Tracking Your Package
-              </h3>
-              <p className="text-gray-600 text-lg">
-                Please wait while we fetch the latest information from
-                PurpleDrone...
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Desktop Tracking Results */}
-        <AnimatePresence>
-          {trackingData && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6 }}
             >
               {(() => {
                 const { data } = trackingData;
@@ -991,49 +316,49 @@ const PurpleDroneTracking = () => {
 
                 return (
                   <div className="space-y-8">
-                    {/* Desktop Status Header */}
+                    {/* Status Header */}
                     <motion.div
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8"
+                      className="bg-slate-800/60 backdrop-blur-xl text-white rounded-2xl shadow-xl border border-slate-700/50 p-6 sm:p-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 }}
                     >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h2 className="text-3xl font-bold mb-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div className="mb-4 sm:mb-0">
+                          <h2 className="text-2xl sm:text-3xl font-bold mb-2">
                             AWB: {latestEvent?.AWBNumber || "N/A"}
                           </h2>
-                          <p className="text-purple-100 text-lg">
+                          <p className="text-slate-300 text-lg">
                             Last Updated:{" "}
                             {formatTrackingDate(latestEvent?.CreatedAt).date},{" "}
                             {formatTrackingDate(latestEvent?.CreatedAt).time}
                           </p>
                         </div>
-                        <div className="text-right">
-                          <div className="flex items-center space-x-3 mb-2">
-                            <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
-                            <span className="text-2xl font-bold">
+                        <div className="text-center sm:text-right">
+                          <div className="flex items-center justify-center sm:justify-end space-x-3 mb-2">
+                            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            <span className="text-xl sm:text-2xl font-bold">
                               {status || "N/A"}
                             </span>
                           </div>
-                          <p className="text-purple-100 text-lg">
+                          <p className="text-slate-300 text-lg">
                             Current Status
                           </p>
                         </div>
                       </div>
                     </motion.div>
 
-                    {/* Desktop Package Information */}
+                    {/* Package Information */}
                     <motion.div
-                      className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8"
+                      className="bg-slate-800/60 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-700/50 p-6 sm:p-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
                           <svg
-                            className="w-5 h-5 text-white"
+                            className="w-4 h-4 text-white"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -1048,70 +373,70 @@ const PurpleDroneTracking = () => {
                         </div>
                         Package Information
                       </h3>
-                      <div className="grid grid-cols-3 gap-6">
-                        <div className="bg-gray-50 rounded-xl p-6">
-                          <div className="text-sm text-gray-600 mb-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                        <div className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                          <div className="text-sm text-slate-300 font-medium mb-2">
                             Customer
                           </div>
-                          <div className="font-semibold text-gray-900 text-lg break-words">
+                          <div className="font-semibold text-white text-lg break-words">
                             {orderData?.CustomerName || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-6">
-                          <div className="text-sm text-gray-600 mb-2">
+                        <div className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                          <div className="text-sm text-slate-300 font-medium mb-2">
                             Address
                           </div>
-                          <div className="font-semibold text-gray-900 text-lg">
+                          <div className="font-semibold text-white text-lg">
                             {orderData?.DeliveryCity || "N/A"},{" "}
                             {orderData?.CustomerDeliveryPincode || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-6">
-                          <div className="text-sm text-gray-600 mb-2">
+                        <div className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                          <div className="text-sm text-slate-300 font-medium mb-2">
                             Shipper
                           </div>
-                          <div className="font-semibold text-gray-900 text-lg">
+                          <div className="font-semibold text-white text-lg">
                             {Client || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-6">
-                          <div className="text-sm text-gray-600 mb-2">
+                        <div className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                          <div className="text-sm text-slate-300 font-medium mb-2">
                             Order Number
                           </div>
-                          <div className="font-mono text-sm text-gray-900 break-all">
+                          <div className="font-mono text-sm text-slate-300 break-all">
                             {orderData?.OrderNumber || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-6">
-                          <div className="text-sm text-gray-600 mb-2">
+                        <div className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                          <div className="text-sm text-slate-300 font-medium mb-2">
                             Amount
                           </div>
-                          <div className="font-semibold text-gray-900 text-lg">
+                          <div className="font-semibold text-white text-lg">
                             INR {orderData?.Amount || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-xl p-6">
-                          <div className="text-sm text-gray-600 mb-2">
+                        <div className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50">
+                          <div className="text-sm text-slate-300 font-medium mb-2">
                             Payment
                           </div>
-                          <div className="font-semibold text-gray-900 text-lg">
+                          <div className="font-semibold text-white text-lg">
                             {orderData?.PaymentType || "N/A"}
                           </div>
                         </div>
                       </div>
                     </motion.div>
 
-                    {/* Desktop Track History */}
+                    {/* Delivery Timeline */}
                     <motion.div
-                      className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8"
+                      className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6 sm:p-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
                           <svg
-                            className="w-5 h-5 text-white"
+                            className="w-4 h-4 text-white"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -1126,7 +451,7 @@ const PurpleDroneTracking = () => {
                         </div>
                         Delivery Timeline
                       </h3>
-                      <div className="space-y-6">
+                      <div className="space-y-4">
                         {histData && histData.length > 0 ? (
                           histData.map((event, index) => {
                             const { date, time } = formatTrackingDate(
@@ -1135,32 +460,32 @@ const PurpleDroneTracking = () => {
                             return (
                               <motion.div
                                 key={index}
-                                className="flex items-start space-x-6 p-6 bg-gray-50 rounded-xl"
+                                className="flex items-start space-x-4 p-4 bg-emerald-50 rounded-xl"
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.1 }}
                               >
                                 <div className="flex-shrink-0">
                                   <div
-                                    className={`w-6 h-6 rounded-full ${
+                                    className={`w-4 h-4 rounded-full ${
                                       index === 0
                                         ? "bg-green-500"
                                         : index === histData.length - 1
                                         ? "bg-gray-400"
-                                        : "bg-purple-500"
+                                        : "bg-emerald-500"
                                     }`}
                                   ></div>
                                   {index < histData.length - 1 && (
-                                    <div className="w-px h-12 bg-purple-300 ml-3 mt-2"></div>
+                                    <div className="w-px h-8 bg-emerald-300 ml-2 mt-1"></div>
                                   )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between mb-3">
-                                    <h4 className="text-lg font-semibold text-gray-900">
+                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                    <h4 className="font-semibold text-gray-900 text-lg">
                                       {event.Remarks}
                                     </h4>
                                     <span
-                                      className={`px-4 py-2 rounded-full text-sm font-medium border ${
+                                      className={`px-3 py-1 rounded-full text-sm font-medium border ${
                                         index === 0
                                           ? "bg-green-100 text-green-800 border-green-200"
                                           : "bg-gray-100 text-gray-800 border-gray-200"
@@ -1169,10 +494,10 @@ const PurpleDroneTracking = () => {
                                       {event.Status || "N/A"}
                                     </span>
                                   </div>
-                                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
                                     <div className="flex items-center">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-purple-500"
+                                        className="w-4 h-4 mr-2 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1189,7 +514,7 @@ const PurpleDroneTracking = () => {
                                     </div>
                                     <div className="flex items-center">
                                       <svg
-                                        className="w-4 h-4 mr-2 text-purple-500"
+                                        className="w-4 h-4 mr-2 text-emerald-500"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -1234,18 +559,18 @@ const PurpleDroneTracking = () => {
                       </div>
                     </motion.div>
 
-                    {/* Desktop Status Details */}
+                    {/* Status Details */}
                     {narvarData && narvarData.length > 0 && (
                       <motion.div
-                        className="bg-white rounded-2xl shadow-xl border border-purple-100 p-8"
+                        className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6 sm:p-8"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
                       >
-                        <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
                             <svg
-                              className="w-5 h-5 text-white"
+                              className="w-4 h-4 text-white"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -1260,18 +585,18 @@ const PurpleDroneTracking = () => {
                           </div>
                           Status Details
                         </h3>
-                        <div className="grid grid-cols-1 gap-6">
+                        <div className="space-y-4">
                           {narvarData.map((item, index) => (
                             <motion.div
                               key={index}
-                              className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200"
+                              className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 sm:p-6 border border-emerald-200"
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: index * 0.1 }}
                             >
-                              <div className="grid grid-cols-3 gap-6">
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
-                                  <span className="text-gray-600 font-medium">
+                                  <span className="text-emerald-600 font-medium">
                                     Status:
                                   </span>
                                   <p className="text-gray-900 font-semibold text-lg">
@@ -1279,7 +604,7 @@ const PurpleDroneTracking = () => {
                                   </p>
                                 </div>
                                 <div>
-                                  <span className="text-gray-600 font-medium">
+                                  <span className="text-emerald-600 font-medium">
                                     Mode:
                                   </span>
                                   <p className="text-gray-900 font-semibold text-lg">
@@ -1287,7 +612,7 @@ const PurpleDroneTracking = () => {
                                   </p>
                                 </div>
                                 <div>
-                                  <span className="text-gray-600 font-medium">
+                                  <span className="text-emerald-600 font-medium">
                                     Location:
                                   </span>
                                   <p className="text-gray-900 font-semibold text-lg break-words">
@@ -1297,7 +622,7 @@ const PurpleDroneTracking = () => {
                                   </p>
                                 </div>
                               </div>
-                              <div className="pt-4 border-t border-purple-200">
+                              <div className="pt-4 border-t border-emerald-200">
                                 <div className="text-sm text-gray-500 space-y-1">
                                   <div>
                                     Created: {formatDate(item.CreatedAt)}
@@ -1321,16 +646,16 @@ const PurpleDroneTracking = () => {
           )}
         </AnimatePresence>
 
-        {/* Desktop No Results State */}
+        {/* No Results State */}
         {!isLoading && !trackingData && !error && (
           <motion.div
-            className="bg-white rounded-3xl shadow-xl border border-purple-100 p-16 text-center"
+            className="bg-slate-800/60 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-700/50 p-12 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-full flex items-center justify-center">
               <svg
-                className="w-12 h-12 text-purple-400"
+                className="w-10 h-10 text-slate-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -1343,10 +668,10 @@ const PurpleDroneTracking = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-xl font-bold text-white mb-3">
               Ready to Track
             </h3>
-            <p className="text-gray-600 text-lg">
+            <p className="text-slate-300 text-lg">
               Enter your AWB number above to get started with PurpleDrone
               tracking
             </p>
