@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 const Contact = () => {
   useEffect(() => {
-    document.title = "Contact | TrackFlow by Murtuja";
+    document.title = "Contact | TrackIndia by Murtuja";
   }, []);
 
   return (
@@ -35,7 +35,7 @@ const Contact = () => {
               Get in Touch
             </h1>
             <p className="text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
-              Have questions about TrackFlow? We're here to help! Reach out to
+              Have questions about TrackIndia? We're here to help! Reach out to
               our team for support, partnerships, or any inquiries about our
               services.
             </p>
@@ -162,8 +162,8 @@ const Contact = () => {
                 Contact Information
               </h2>
               <p className="text-lg text-slate-300 mb-8">
-                We're here to help with any questions about TrackFlow. Reach out
-                to us through any of the channels below.
+                We're here to help with any questions about TrackIndia. Reach
+                out to us through any of the channels below.
               </p>
             </div>
 
@@ -215,7 +215,7 @@ const Contact = () => {
                   <h3 className="text-lg font-bold text-white mb-2">
                     Email Support
                   </h3>
-                  <p className="text-slate-300 mb-1">support@trackflow.in</p>
+                  <p className="text-slate-300 mb-1">support@trackindia.in</p>
                   <p className="text-sm text-slate-400">
                     We respond within 24 hours
                   </p>
@@ -249,7 +249,7 @@ const Contact = () => {
                     Office Address
                   </h3>
                   <p className="text-slate-300 mb-1">
-                    TrackFlow Technologies Pvt. Ltd.
+                    TrackIndia Technologies Pvt. Ltd.
                   </p>
                   <p className="text-slate-300 mb-1">
                     123 Tech Park, Hi-tech City
@@ -269,7 +269,7 @@ const Contact = () => {
               </h3>
               <div className="flex justify-center sm:justify-start space-x-4">
                 <a
-                  href="https://twitter.com/trackflow"
+                  href="https://twitter.com/trackindia"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-slate-700/80 backdrop-blur-sm hover:bg-emerald-500/20 rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 border border-slate-600 shadow-md"
@@ -283,7 +283,7 @@ const Contact = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://facebook.com/trackflow"
+                  href="https://facebook.com/trackindia"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-slate-700/80 backdrop-blur-sm hover:bg-emerald-500/20 rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 border border-slate-600 shadow-md"
@@ -297,7 +297,7 @@ const Contact = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://pinterest.com/trackflow"
+                  href="https://pinterest.com/trackindia"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-slate-700/80 backdrop-blur-sm hover:bg-emerald-500/20 rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 border border-slate-600 shadow-md"
@@ -324,17 +324,17 @@ const Contact = () => {
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-slate-300">
-              Find answers to common questions about TrackFlow
+              Find answers to common questions about TrackIndia
             </p>
           </div>
 
           <div className="space-y-6">
             <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-700/50 p-6">
               <h3 className="text-lg font-bold text-white mb-3">
-                How does TrackFlow work?
+                How does TrackIndia work?
               </h3>
               <p className="text-slate-300">
-                TrackFlow connects directly to official courier service APIs to
+                TrackIndia connects directly to official courier service APIs to
                 provide real-time tracking information. Simply enter your
                 tracking number and select the courier service to get instant
                 updates.
@@ -366,10 +366,10 @@ const Contact = () => {
 
             <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-700/50 p-6">
               <h3 className="text-lg font-bold text-white mb-3">
-                Is TrackFlow free to use?
+                Is TrackIndia free to use?
               </h3>
               <p className="text-slate-300">
-                Yes! TrackFlow is completely free to use. We believe that
+                Yes! TrackIndia is completely free to use. We believe that
                 package tracking should be accessible to everyone without any
                 cost barriers.
               </p>

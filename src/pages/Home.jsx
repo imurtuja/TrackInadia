@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import TrackingForm from '../components/TrackingForm';
-import ServicesShowcase from '../components/ServicesShowcase';
+import { useEffect } from "react";
+import TrackingForm from "../components/TrackingForm";
+import ServicesShowcase from "../components/ServicesShowcase";
 
 const Home = () => {
   useEffect(() => {
-    document.title = "TrackFlow by Murtuja - Package Tracking Platform";
+    document.title = "TrackIndia by Murtuja - Package Tracking Platform";
   }, []);
 
   return (
@@ -15,4 +15,4 @@ const Home = () => {
   );
 };
 
-export default Home; 
+export default Home;

@@ -14,7 +14,7 @@ const Tracking = () => {
   // Removed demo mode - using real API only
 
   useEffect(() => {
-    document.title = "TrackFlow - Package Tracking | PurpleDrone Integration";
+    document.title = "TrackIndia - Package Tracking";
   }, []);
 
   const handleTrack = async (e) => {

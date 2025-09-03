@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 const Help = () => {
   useEffect(() => {
-    document.title = "Help Center | TrackFlow by Murtuja";
+    document.title = "Help Center | trackindia by Murtuja";
   }, []);
 
   return (
@@ -27,7 +27,7 @@ const Help = () => {
             </h1>
             <p className="text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
               Find answers to common questions, troubleshooting guides, and get the support you need 
-              to make the most of TrackFlow's package tracking services.
+              to make the most of trackindia's package tracking services.
             </p>
           </div>
         </div>
@@ -67,7 +67,7 @@ const Help = () => {
               </svg>
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Getting Started</h3>
-            <p className="text-slate-300 text-sm mb-4">Learn how to track your first package and use TrackFlow effectively</p>
+            <p className="text-slate-300 text-sm mb-4">Learn how to track your first package and use trackindia effectively</p>
             <Link to="#" className="text-emerald-400 hover:text-emerald-300 text-sm font-medium">View Articles →</Link>
           </div>
 
@@ -144,7 +144,7 @@ const Help = () => {
 
             <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-700/50 p-6">
               <h3 className="text-lg font-bold text-white mb-3">Which courier services are supported?</h3>
-              <p className="text-slate-300">TrackFlow supports 13+ major Indian courier services including Blue Dart, Delhivery, DTDC, India Post, FedEx, DHL, and many more. Check our Services page for the complete list.</p>
+              <p className="text-slate-300">trackindia supports 13+ major Indian courier services including Blue Dart, Delhivery, DTDC, India Post, FedEx, DHL, and many more. Check our Services page for the complete list.</p>
             </div>
 
             <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-700/50 p-6">
@@ -158,8 +158,8 @@ const Help = () => {
             </div>
 
             <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-700/50 p-6">
-              <h3 className="text-lg font-bold text-white mb-3">Is TrackFlow free to use?</h3>
-              <p className="text-slate-300">Yes, TrackFlow is completely free to use. There are no hidden charges or subscription fees. We provide this service to make package tracking easier for everyone.</p>
+              <h3 className="text-lg font-bold text-white mb-3">Is trackindia free to use?</h3>
+              <p className="text-slate-300">Yes, trackindia is completely free to use. There are no hidden charges or subscription fees. We provide this service to make package tracking easier for everyone.</p>
             </div>
           </div>
         </div>
@@ -183,7 +183,7 @@ const Help = () => {
               Contact Support
             </Link>
             <a 
-              href="mailto:support@trackflow.in" 
+              href="mailto:support@trackindia.in" 
               className="inline-flex items-center px-8 py-4 bg-slate-700/80 backdrop-blur-sm text-white rounded-2xl font-semibold text-lg hover:bg-slate-600/80 transition-all duration-500 transform hover:scale-105 border border-slate-600"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

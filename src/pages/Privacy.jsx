@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 const Privacy = () => {
   useEffect(() => {
-    document.title = "Privacy Policy | TrackFlow by Murtuja";
+    document.title = "Privacy Policy | TrackIndia by Murtuja";
   }, []);
 
   return (
@@ -26,7 +26,7 @@ const Privacy = () => {
             </h1>
             <p className="text-xl text-slate-300 max-w-4xl mx-auto mb-16 leading-relaxed">
               Your privacy is important to us. This policy explains how we collect, use, and protect your information 
-              when you use TrackFlow's package tracking services.
+              when you use TrackIndia's package tracking services.
             </p>
             <div className="text-sm text-slate-400">
               Last updated: December 2024
@@ -42,11 +42,11 @@ const Privacy = () => {
           <div className="bg-slate-800/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-slate-700/50 p-8">
             <h2 className="text-2xl font-bold text-white mb-6">Introduction</h2>
             <p className="text-slate-300 mb-4 leading-relaxed">
-              TrackFlow ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, 
+              TrackIndia ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, 
               use, disclose, and safeguard your information when you visit our website and use our package tracking services.
             </p>
             <p className="text-slate-300 leading-relaxed">
-              By using TrackFlow, you agree to the collection and use of information in accordance with this policy. 
+              By using TrackIndia, you agree to the collection and use of information in accordance with this policy. 
               If you do not agree with our policies and practices, please do not use our service.
             </p>
           </div>
@@ -195,14 +195,14 @@ const Privacy = () => {
                 <svg className="w-5 h-5 text-emerald-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="text-slate-300">Email: privacy@trackflow.in</span>
+                <span className="text-slate-300">Email: privacy@trackindia.in</span>
               </div>
               <div className="flex items-center">
                 <svg className="w-5 h-5 text-emerald-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="text-slate-300">Address: TrackFlow Technologies Pvt. Ltd., 123 Tech Park, Sector 62, Noida, Uttar Pradesh, India</span>
+                <span className="text-slate-300">Address: TrackIndia Technologies Pvt. Ltd., 123 Tech Park, Sector 62, Noida, Uttar Pradesh, India</span>
               </div>
             </div>
           </div>
@@ -217,7 +217,7 @@ const Privacy = () => {
             </p>
             
             <p className="text-slate-300">
-              Your continued use of TrackFlow after any changes to this Privacy Policy constitutes acceptance of the updated policy.
+              Your continued use of TrackIndia after any changes to this Privacy Policy constitutes acceptance of the updated policy.
             </p>
           </div>
         </div>
