@@ -6,7 +6,7 @@ export const config = {
   api: {
     responseLimit: false,
   },
-  maxDuration: 30, // 30 seconds timeout
+  maxDuration: 60, // 60 seconds timeout for Pro plan
 };
 
 export default async function handler(req, res) {
@@ -32,9 +32,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "AWB number is required" });
     }
 
-    // First, get CSRF token with timeout
+    // First, get CSRF token with shorter timeout
     const csrfController = new AbortController();
-    const csrfTimeout = setTimeout(() => csrfController.abort(), 15000); // 15 second timeout
+    const csrfTimeout = setTimeout(() => csrfController.abort(), 10000); // 10 second timeout
 
     const csrfResponse = await fetch(
       "https://app.cuberoote.com/cuberootapi/tracking",
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
 
     // Make tracking request with timeout
     const trackingController = new AbortController();
-    const trackingTimeout = setTimeout(() => trackingController.abort(), 15000); // 15 second timeout
+    const trackingTimeout = setTimeout(() => trackingController.abort(), 10000); // 10 second timeout
 
     const trackingResponse = await fetch(
       "https://app.cuberoote.com/cuberootapi/trackwithawb",

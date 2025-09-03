@@ -9,11 +9,13 @@ const PURPLE_DRONE_API_BASE = import.meta.env.DEV
  * @param {string} awbNumber - The Air Waybill Number to track
  * @returns {Promise<Object>} - Tracking data response
  */
-export const trackPackage = async (awbNumber) => {
+export const trackPackage = async (awbNumber, retryCount = 0) => {
+  const maxRetries = 2;
+
   try {
     // Create AbortController for timeout handling
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
 
     // Use Vercel API route for both development and production
     const response = await fetch(`${PURPLE_DRONE_API_BASE}/tracking`, {
@@ -33,6 +35,12 @@ export const trackPackage = async (awbNumber) => {
     if (!response.ok) {
       // Handle specific error codes
       if (response.status === 504) {
+        // Retry on timeout if we haven't exceeded max retries
+        if (retryCount < maxRetries) {
+          console.log(`Retrying request (${retryCount + 1}/${maxRetries})...`);
+          await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 seconds
+          return trackPackage(awbNumber, retryCount + 1);
+        }
         throw new Error(
           "Request timeout - The tracking service is taking too long to respond. Please try again."
         );
@@ -58,6 +66,14 @@ export const trackPackage = async (awbNumber) => {
 
     // Handle specific error types
     if (error.name === "AbortError") {
+      // Retry on abort if we haven't exceeded max retries
+      if (retryCount < maxRetries) {
+        console.log(
+          `Retrying request after abort (${retryCount + 1}/${maxRetries})...`
+        );
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 seconds
+        return trackPackage(awbNumber, retryCount + 1);
+      }
       throw new Error(
         "Request timeout - The tracking service is taking too long to respond. Please try again."
       );
