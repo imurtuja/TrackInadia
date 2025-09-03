@@ -100,7 +100,25 @@ const PurpleDroneTracking = () => {
         // Convert to proper format: "September 03, 2025 16:30 PM"
         cleanDateString = cleanDateString.replace(/, (\d{2}:\d{2})/, " $1");
 
+        // Try parsing the cleaned date
         date = new Date(cleanDateString);
+
+        // If that fails, try a different approach
+        if (isNaN(date.getTime())) {
+          // Try parsing with different format
+          const parts = cleanDateString.split(" ");
+          if (parts.length >= 4) {
+            const month = parts[0]; // September
+            const day = parts[1].replace(",", ""); // 03
+            const year = parts[2]; // 2025
+            const time = parts[3]; // 16:30
+            const ampm = parts[4]; // PM
+
+            // Create a proper date string
+            const properDateString = `${month} ${day}, ${year} ${time} ${ampm}`;
+            date = new Date(properDateString);
+          }
+        }
       } else {
         // Handle ISO format like "2025-09-03T05:15:17.208929"
         date = new Date(dateString);
@@ -553,7 +571,7 @@ const PurpleDroneTracking = () => {
                                   </div>
 
                                   {/* Date and Time */}
-                                  <div className="text-sm text-slate-300">
+                                  <div className="text-sm text-slate-300 space-y-1">
                                     <div className="flex items-center">
                                       <svg
                                         className="w-4 h-4 mr-2 text-emerald-500"
@@ -568,11 +586,28 @@ const PurpleDroneTracking = () => {
                                           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                                         />
                                       </svg>
-                                      <span className="font-medium">
-                                        Date & Time:
-                                      </span>{" "}
+                                      <span className="font-medium">time:</span>{" "}
                                       <span className="ml-1 text-white font-semibold">
-                                        {time} {date}
+                                        {time}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center">
+                                      <svg
+                                        className="w-4 h-4 mr-2 text-emerald-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                        />
+                                      </svg>
+                                      <span className="font-medium">date:</span>{" "}
+                                      <span className="ml-1 text-white font-semibold">
+                                        {date}
                                       </span>
                                     </div>
                                   </div>
