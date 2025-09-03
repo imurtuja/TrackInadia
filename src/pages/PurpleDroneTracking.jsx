@@ -82,7 +82,26 @@ const PurpleDroneTracking = () => {
 
   const formatTrackingDate = (dateString) => {
     try {
-      const date = new Date(dateString);
+      if (!dateString) return { date: "N/A", time: "N/A" };
+
+      // Handle different date formats from API
+      let date;
+      if (
+        dateString.includes("September") ||
+        dateString.includes("AM") ||
+        dateString.includes("PM")
+      ) {
+        // Handle format like "September 03, 2025, 07:06 AM"
+        date = new Date(dateString);
+      } else {
+        // Handle ISO format like "2025-09-03T05:15:17.208929"
+        date = new Date(dateString);
+      }
+
+      if (isNaN(date.getTime())) {
+        return { date: "N/A", time: "N/A" };
+      }
+
       return {
         date: date.toLocaleDateString("en-US", {
           day: "numeric",
@@ -310,7 +329,7 @@ const PurpleDroneTracking = () => {
               {(() => {
                 const { data } = trackingData;
                 const { orderData, histData, narvarData, Client, status } =
-                  data;
+                  data.data;
                 const latestEvent =
                   histData && histData.length > 0 ? histData[0] : null;
 
@@ -326,7 +345,10 @@ const PurpleDroneTracking = () => {
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <div className="mb-4 sm:mb-0">
                           <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-                            AWB: {latestEvent?.AWBNumber || "N/A"}
+                            AWB:{" "}
+                            {latestEvent?.AWBNumber ||
+                              orderData?.OrderNumber ||
+                              "N/A"}
                           </h2>
                           <p className="text-slate-300 text-lg">
                             Last Updated:{" "}
