@@ -14,7 +14,6 @@ const TrackingForm = () => {
   const [trackingResults, setTrackingResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
-
   const heroRef = useRef(null);
   const statsRef = useRef(null);
   const formRef = useRef(null);

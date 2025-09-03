@@ -122,72 +122,67 @@ const PurpleDroneTracking = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
-      {/* Compact SEO-Optimized Header */}
+      {/* Mobile-Optimized Header */}
       <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white shadow-xl">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-            <div className="text-center lg:text-left mb-6 lg:mb-0">
-              <motion.div
-                className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-xl mb-4 backdrop-blur-sm"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+          <div className="flex flex-col items-center text-center">
+            <motion.div
+              className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-xl mb-3 sm:mb-4 backdrop-blur-sm"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <svg
+                className="w-6 h-6 sm:w-8 sm:h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                  />
-                </svg>
-              </motion.div>
-              <motion.h1
-                className="text-3xl lg:text-4xl font-bold mb-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                PurpleDrone Package Tracking
-              </motion.h1>
-              <motion.p
-                className="text-lg text-purple-100 max-w-xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-              >
-                Track your drone delivery packages with real-time updates and
-                detailed tracking information
-              </motion.p>
-            </div>
-            <div className="flex items-center justify-center lg:justify-end">
-              <div className="flex items-center space-x-3 bg-white/20 rounded-xl px-4 py-3 backdrop-blur-sm">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium">Live Tracking</span>
-              </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </motion.div>
+            <motion.h1
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 px-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              PurpleDrone Package Tracking
+            </motion.h1>
+            <motion.p
+              className="text-sm sm:text-base lg:text-lg text-purple-100 max-w-2xl px-4 mb-4 sm:mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              Track your drone delivery packages with real-time updates and
+              detailed tracking information
+            </motion.p>
+            <div className="flex items-center space-x-3 bg-white/20 rounded-xl px-3 sm:px-4 py-2 sm:py-3 backdrop-blur-sm">
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-xs sm:text-sm font-medium">
+                Live Tracking
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Compact Search Form */}
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
+        {/* Mobile-Optimized Search Form */}
         <motion.div
-          className="bg-white rounded-2xl shadow-lg border border-purple-100 p-6 mb-6"
+          className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6 mb-4 sm:mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <form
-            onSubmit={handleTrack}
-            className="flex flex-col sm:flex-row gap-4 items-end"
-          >
-            <div className="flex-1">
+          <form onSubmit={handleTrack} className="space-y-4">
+            <div>
               <label
                 htmlFor="trackingNumber"
                 className="block text-sm font-semibold text-gray-700 mb-2"
@@ -200,13 +195,13 @@ const PurpleDroneTracking = () => {
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value)}
                 placeholder="Enter your AWB number (e.g., PRD008032113P)"
-                className="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 text-base bg-purple-50/50"
+                className="w-full px-3 sm:px-4 py-3 border-2 border-purple-200 rounded-lg sm:rounded-xl focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 text-sm sm:text-base bg-purple-50/50"
               />
             </div>
             <motion.button
               type="submit"
               disabled={isLoading || !trackingNumber.trim()}
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-semibold text-base hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:transform-none disabled:shadow-none flex items-center space-x-2"
+              className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 sm:px-8 py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:transform-none disabled:shadow-none flex items-center justify-center space-x-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -293,22 +288,22 @@ const PurpleDroneTracking = () => {
           )}
         </AnimatePresence>
 
-        {/* Loading State */}
+        {/* Mobile-Optimized Loading State */}
         <AnimatePresence>
           {isLoading && (
             <motion.div
-              className="bg-white rounded-3xl shadow-xl border border-purple-100 p-16 text-center"
+              className="bg-white rounded-xl sm:rounded-3xl shadow-xl border border-purple-100 p-8 sm:p-12 lg:p-16 text-center"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
             >
               <motion.div
-                className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center"
+                className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               >
                 <svg
-                  className="w-10 h-10 text-white"
+                  className="w-8 h-8 sm:w-10 sm:h-10 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -321,10 +316,10 @@ const PurpleDroneTracking = () => {
                   />
                 </svg>
               </motion.div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
                 Tracking Your Package
               </h3>
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-600 text-sm sm:text-base lg:text-lg px-4">
                 Please wait while we fetch the latest information from
                 PurpleDrone...
               </p>
@@ -350,29 +345,27 @@ const PurpleDroneTracking = () => {
 
                 return (
                   <div className="space-y-6">
-                    {/* Compact Status Header */}
+                    {/* Mobile-Optimized Status Header */}
                     <motion.div
-                      className="bg-white rounded-2xl shadow-lg border border-purple-100 overflow-hidden"
+                      className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 overflow-hidden"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 }}
                     >
-                      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                          <div className="mb-4 sm:mb-0">
-                            <h2 className="text-2xl font-bold mb-1">
-                              AWB: {latestEvent?.AWBNumber || "N/A"}
-                            </h2>
-                            {latestEvent && (
-                              <p className="text-purple-100 text-sm">
-                                Last Updated: {latestEvent.CreatedAt}
-                              </p>
-                            )}
-                          </div>
-                          <div className="flex items-center space-x-3 bg-white/20 rounded-xl px-4 py-3 backdrop-blur-sm">
-                            <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-4 sm:p-6 text-white">
+                        <div className="text-center">
+                          <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 break-all">
+                            AWB: {latestEvent?.AWBNumber || "N/A"}
+                          </h2>
+                          {latestEvent && (
+                            <p className="text-purple-100 text-xs sm:text-sm mb-4">
+                              Last Updated: {latestEvent.CreatedAt}
+                            </p>
+                          )}
+                          <div className="flex items-center justify-center space-x-3 bg-white/20 rounded-xl px-3 sm:px-4 py-2 sm:py-3 backdrop-blur-sm">
+                            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white/30 rounded-full flex items-center justify-center">
                               <svg
-                                className="w-4 h-4 text-white"
+                                className="w-3 h-3 sm:w-4 sm:h-4 text-white"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -386,7 +379,7 @@ const PurpleDroneTracking = () => {
                               </svg>
                             </div>
                             <div>
-                              <div className="text-lg font-bold">
+                              <div className="text-base sm:text-lg font-bold">
                                 {status || "N/A"}
                               </div>
                               <div className="text-purple-100 text-xs">
@@ -398,17 +391,17 @@ const PurpleDroneTracking = () => {
                       </div>
                     </motion.div>
 
-                    {/* Compact Package Information */}
+                    {/* Mobile-Optimized Package Information */}
                     <motion.div
-                      className="bg-white rounded-2xl shadow-lg border border-purple-100 p-6"
+                      className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 }}
                     >
-                      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
                           <svg
-                            className="w-4 h-4 text-white"
+                            className="w-3 h-3 sm:w-4 sm:h-4 text-white"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -423,70 +416,70 @@ const PurpleDroneTracking = () => {
                         </div>
                         Package Information
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <div className="text-sm text-gray-600 mb-1">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Customer
                           </div>
-                          <div className="font-semibold text-gray-900">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base break-words">
                             {orderData?.CustomerName || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <div className="text-sm text-gray-600 mb-1">
+                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Address
                           </div>
-                          <div className="font-semibold text-gray-900">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
                             {orderData?.DeliveryCity || "N/A"},{" "}
                             {orderData?.CustomerDeliveryPincode || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <div className="text-sm text-gray-600 mb-1">
+                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Shipper
                           </div>
-                          <div className="font-semibold text-gray-900">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
                             {Client || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <div className="text-sm text-gray-600 mb-1">
+                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Order Number
                           </div>
-                          <div className="font-mono text-sm text-gray-900">
+                          <div className="font-mono text-xs sm:text-sm text-gray-900 break-all">
                             {orderData?.OrderNumber || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <div className="text-sm text-gray-600 mb-1">
+                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Amount
                           </div>
-                          <div className="font-semibold text-gray-900">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
                             INR {orderData?.Amount || "N/A"}
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <div className="text-sm text-gray-600 mb-1">
+                        <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Payment
                           </div>
-                          <div className="font-semibold text-gray-900">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base">
                             {orderData?.PaymentType || "N/A"}
                           </div>
                         </div>
                       </div>
                     </motion.div>
 
-                    {/* Compact Track History */}
+                    {/* Mobile-Optimized Track History */}
                     <motion.div
-                      className="bg-white rounded-2xl shadow-lg border border-purple-100 p-6"
+                      className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
                           <svg
-                            className="w-4 h-4 text-white"
+                            className="w-3 h-3 sm:w-4 sm:h-4 text-white"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -501,7 +494,7 @@ const PurpleDroneTracking = () => {
                         </div>
                         Delivery Timeline
                       </h3>
-                      <div className="space-y-4">
+                      <div className="space-y-3 sm:space-y-4">
                         {histData && histData.length > 0 ? (
                           histData.map((event, index) => {
                             const { date, time } = formatTrackingDate(
@@ -510,42 +503,42 @@ const PurpleDroneTracking = () => {
                             return (
                               <motion.div
                                 key={index}
-                                className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl"
+                                className="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl"
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.5 + index * 0.1 }}
                               >
                                 <div className="flex-shrink-0">
                                   <div
-                                    className={`w-4 h-4 rounded-full ${
+                                    className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${
                                       index === 0
                                         ? "bg-emerald-500"
                                         : "bg-purple-400"
                                     } flex items-center justify-center`}
                                   >
-                                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full"></div>
                                   </div>
                                   {index < histData.length - 1 && (
-                                    <div className="w-px h-8 bg-purple-300 ml-2 mt-1"></div>
+                                    <div className="w-px h-6 sm:h-8 bg-purple-300 ml-1.5 sm:ml-2 mt-1"></div>
                                   )}
                                 </div>
-                                <div className="flex-1">
-                                  <div className="flex items-center justify-between mb-2">
-                                    <h4 className="font-semibold text-gray-900">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+                                    <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
                                       {event.Remarks}
                                     </h4>
                                     <span
                                       className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(
                                         event.Remarks
-                                      )}`}
+                                      )} self-start sm:self-auto`}
                                     >
                                       {event.Status || "N/A"}
                                     </span>
                                   </div>
-                                  <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-600">
                                     <div className="flex items-center">
                                       <svg
-                                        className="w-3 h-3 mr-1 text-purple-500"
+                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -558,11 +551,11 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">Date:</span>{" "}
-                                      {date}
+                                      <span className="truncate">{date}</span>
                                     </div>
                                     <div className="flex items-center">
                                       <svg
-                                        className="w-3 h-3 mr-1 text-purple-500"
+                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -575,11 +568,11 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">Time:</span>{" "}
-                                      {time}
+                                      <span className="truncate">{time}</span>
                                     </div>
                                     <div className="flex items-center">
                                       <svg
-                                        className="w-3 h-3 mr-1 text-purple-500"
+                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -600,11 +593,13 @@ const PurpleDroneTracking = () => {
                                       <span className="font-medium">
                                         Location:
                                       </span>{" "}
-                                      {event.userlocation}
+                                      <span className="truncate">
+                                        {event.userlocation}
+                                      </span>
                                     </div>
                                     <div className="flex items-center">
                                       <svg
-                                        className="w-3 h-3 mr-1 text-purple-500"
+                                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 text-purple-500 flex-shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -617,7 +612,9 @@ const PurpleDroneTracking = () => {
                                         />
                                       </svg>
                                       <span className="font-medium">By:</span>{" "}
-                                      {event.createdBy}
+                                      <span className="truncate">
+                                        {event.createdBy}
+                                      </span>
                                     </div>
                                   </div>
                                 </div>
@@ -632,18 +629,18 @@ const PurpleDroneTracking = () => {
                       </div>
                     </motion.div>
 
-                    {/* Compact Status Details */}
+                    {/* Mobile-Optimized Status Details */}
                     {narvarData && narvarData.length > 0 && (
                       <motion.div
-                        className="bg-white rounded-2xl shadow-lg border border-purple-100 p-6"
+                        className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-100 p-4 sm:p-6"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6 }}
                       >
-                        <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                          <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
+                          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
                             <svg
-                              className="w-4 h-4 text-white"
+                              className="w-3 h-3 sm:w-4 sm:h-4 text-white"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -658,34 +655,34 @@ const PurpleDroneTracking = () => {
                           </div>
                           Status Details
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                           {narvarData.map((item, index) => (
                             <motion.div
                               key={item.id || index}
-                              className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-4 border border-purple-200"
+                              className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-purple-200"
                               initial={{ opacity: 0, scale: 0.95 }}
                               animate={{ opacity: 1, scale: 1 }}
                               transition={{ delay: 0.7 + index * 0.1 }}
                             >
-                              <div className="space-y-3">
-                                <div className="flex items-center justify-between">
-                                  <h4 className="font-semibold text-gray-900">
+                              <div className="space-y-2 sm:space-y-3">
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                  <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
                                     Status
                                   </h4>
                                   <span
                                     className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(
                                       item.Status
-                                    )}`}
+                                    )} self-start sm:self-auto`}
                                   >
                                     {item.Status}
                                   </span>
                                 </div>
-                                <div className="grid grid-cols-2 gap-2 text-sm">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
                                   <div>
                                     <span className="text-gray-600 font-medium">
                                       Code:
                                     </span>
-                                    <p className="font-mono text-gray-900 font-semibold">
+                                    <p className="font-mono text-gray-900 font-semibold break-all">
                                       {item.StatusCode}
                                     </p>
                                   </div>
@@ -701,7 +698,7 @@ const PurpleDroneTracking = () => {
                                     <span className="text-gray-600 font-medium">
                                       Location:
                                     </span>
-                                    <p className="text-gray-900 font-semibold">
+                                    <p className="text-gray-900 font-semibold break-words">
                                       {item.LocationName ||
                                         item.CityName ||
                                         "N/A"}
@@ -711,18 +708,18 @@ const PurpleDroneTracking = () => {
                                     <span className="text-gray-600 font-medium">
                                       State:
                                     </span>
-                                    <p className="text-gray-900 font-semibold">
+                                    <p className="text-gray-900 font-semibold break-words">
                                       {item.StateName || "N/A"}
                                     </p>
                                   </div>
                                 </div>
                                 <div className="pt-2 border-t border-purple-200">
                                   <div className="text-xs text-gray-500 space-y-1">
-                                    <div>
+                                    <div className="break-words">
                                       Created: {formatDate(item.CreatedAt)}
                                     </div>
                                     {item.DeliveryDate && (
-                                      <div>
+                                      <div className="break-words">
                                         Expected:{" "}
                                         {formatDate(item.DeliveryDate)}
                                       </div>
@@ -742,16 +739,16 @@ const PurpleDroneTracking = () => {
           )}
         </AnimatePresence>
 
-        {/* No Results State */}
+        {/* Mobile-Optimized No Results State */}
         {!isLoading && !trackingData && !error && (
           <motion.div
-            className="bg-white rounded-3xl shadow-xl border border-purple-100 p-16 text-center"
+            className="bg-white rounded-xl sm:rounded-3xl shadow-xl border border-purple-100 p-8 sm:p-12 lg:p-16 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto mb-6 sm:mb-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center">
               <svg
-                className="w-12 h-12 text-purple-400"
+                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-purple-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -764,10 +761,10 @@ const PurpleDroneTracking = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
               Ready to Track
             </h3>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg px-4">
               Enter your AWB number above to get started with PurpleDrone
               tracking
             </p>
