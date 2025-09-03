@@ -11,6 +11,10 @@ const PURPLE_DRONE_API_BASE = import.meta.env.DEV
  */
 export const trackPackage = async (awbNumber) => {
   try {
+    // Create AbortController for timeout handling
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
     // Use Vercel API route for both development and production
     const response = await fetch(`${PURPLE_DRONE_API_BASE}/tracking`, {
       method: "POST",
@@ -21,10 +25,24 @@ export const trackPackage = async (awbNumber) => {
       body: JSON.stringify({
         awbnumber: awbNumber,
       }),
+      signal: controller.signal,
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+      // Handle specific error codes
+      if (response.status === 504) {
+        throw new Error(
+          "Request timeout - The tracking service is taking too long to respond. Please try again."
+        );
+      } else if (response.status === 500) {
+        throw new Error(
+          "Server error - There was an issue with the tracking service. Please try again later."
+        );
+      } else {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
     }
 
     const result = await response.json();
@@ -37,6 +55,14 @@ export const trackPackage = async (awbNumber) => {
     return result;
   } catch (error) {
     console.error("PurpleDrone API Error:", error);
+
+    // Handle specific error types
+    if (error.name === "AbortError") {
+      throw new Error(
+        "Request timeout - The tracking service is taking too long to respond. Please try again."
+      );
+    }
+
     throw error; // Re-throw error instead of falling back to mock data
   }
 };

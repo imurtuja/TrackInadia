@@ -119,6 +119,32 @@ const PurpleDroneTracking = () => {
             date = new Date(properDateString);
           }
         }
+
+        // If still failing, try manual parsing
+        if (isNaN(date.getTime())) {
+          // Extract components manually
+          const monthMatch = dateString.match(
+            /(\w+) (\d+), (\d+), (\d+):(\d+) (AM|PM)/
+          );
+          if (monthMatch) {
+            const [, month, day, year, hour, minute, ampm] = monthMatch;
+            const monthIndex = new Date(`${month} 1, 2000`).getMonth();
+            const hour24 =
+              ampm === "PM" && parseInt(hour) !== 12
+                ? parseInt(hour) + 12
+                : ampm === "AM" && parseInt(hour) === 12
+                ? 0
+                : parseInt(hour);
+
+            date = new Date(
+              parseInt(year),
+              monthIndex,
+              parseInt(day),
+              hour24,
+              parseInt(minute)
+            );
+          }
+        }
       } else {
         // Handle ISO format like "2025-09-03T05:15:17.208929"
         date = new Date(dateString);
@@ -503,149 +529,160 @@ const PurpleDroneTracking = () => {
                       </h3>
                       <div className="space-y-4">
                         {histData && histData.length > 0 ? (
-                          histData.map((event, index) => {
-                            const { date, time } = formatTrackingDate(
-                              event.CreatedAt
-                            );
-                            return (
-                              <motion.div
-                                key={index}
-                                className="flex items-start space-x-4 p-4 bg-slate-700/50 rounded-xl border border-slate-600/50"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                              >
-                                <div className="flex-shrink-0">
-                                  <div
-                                    className={`w-4 h-4 rounded-full ${
-                                      index === 0
-                                        ? "bg-green-500"
-                                        : index === histData.length - 1
-                                        ? "bg-gray-400"
-                                        : "bg-emerald-500"
-                                    }`}
-                                  ></div>
-                                  {index < histData.length - 1 && (
-                                    <div className="w-px h-8 bg-emerald-300 ml-2 mt-1"></div>
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
-                                    <h4 className="font-semibold text-white text-lg mb-2 sm:mb-0">
-                                      {event.Remarks || "N/A"}
-                                    </h4>
-                                    <span
-                                      className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                          histData
+                            .filter(
+                              (event) =>
+                                !event.Remarks?.includes(
+                                  "Order pushed to Narvar"
+                                )
+                            )
+                            .map((event, index) => {
+                              const { date, time } = formatTrackingDate(
+                                event.CreatedAt
+                              );
+                              return (
+                                <motion.div
+                                  key={index}
+                                  className="flex items-start space-x-4 p-4 bg-slate-700/50 rounded-xl border border-slate-600/50"
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: index * 0.1 }}
+                                >
+                                  <div className="flex-shrink-0">
+                                    <div
+                                      className={`w-4 h-4 rounded-full ${
                                         index === 0
-                                          ? "bg-green-500/20 text-green-300 border-green-500/30"
-                                          : "bg-slate-600/50 text-slate-300 border-slate-500/50"
+                                          ? "bg-green-500"
+                                          : index === histData.length - 1
+                                          ? "bg-gray-400"
+                                          : "bg-emerald-500"
                                       }`}
-                                    >
-                                      {event.Status || "N/A"}
-                                    </span>
+                                    ></div>
+                                    {index < histData.length - 1 && (
+                                      <div className="w-px h-8 bg-emerald-300 ml-2 mt-1"></div>
+                                    )}
                                   </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+                                      <h4 className="font-semibold text-white text-lg mb-2 sm:mb-0">
+                                        {event.Remarks || "N/A"}
+                                      </h4>
+                                      <span
+                                        className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                                          index === 0
+                                            ? "bg-green-500/20 text-green-300 border-green-500/30"
+                                            : "bg-slate-600/50 text-slate-300 border-slate-500/50"
+                                        }`}
+                                      >
+                                        {event.Status || "N/A"}
+                                      </span>
+                                    </div>
 
-                                  {/* Created By */}
-                                  <div className="mb-3">
-                                    <div className="flex items-center text-sm text-slate-300">
-                                      <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">
-                                        Created By:
-                                      </span>{" "}
-                                      <span className="ml-1 text-white font-semibold">
-                                        {event.createdBy || "N/A"}
-                                      </span>
+                                    {/* Created By */}
+                                    <div className="mb-3">
+                                      <div className="flex items-center text-sm text-slate-300">
+                                        <svg
+                                          className="w-4 h-4 mr-2 text-emerald-500"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                          />
+                                        </svg>
+                                        <span className="font-medium">
+                                          Created By:
+                                        </span>{" "}
+                                        <span className="ml-1 text-white font-semibold">
+                                          {event.createdBy || "N/A"}
+                                        </span>
+                                      </div>
                                     </div>
-                                  </div>
 
-                                  {/* Date and Time */}
-                                  <div className="text-sm text-slate-300 space-y-1">
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">time:</span>{" "}
-                                      <span className="ml-1 text-white font-semibold">
-                                        {time}
-                                      </span>
+                                    {/* Date and Time */}
+                                    <div className="text-sm text-slate-300 space-y-1">
+                                      <div className="flex items-center">
+                                        <svg
+                                          className="w-4 h-4 mr-2 text-emerald-500"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                          />
+                                        </svg>
+                                        <span className="font-medium">
+                                          time:
+                                        </span>{" "}
+                                        <span className="ml-1 text-white font-semibold">
+                                          {time}
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center">
+                                        <svg
+                                          className="w-4 h-4 mr-2 text-emerald-500"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                          />
+                                        </svg>
+                                        <span className="font-medium">
+                                          date:
+                                        </span>{" "}
+                                        <span className="ml-1 text-white font-semibold">
+                                          {date}
+                                        </span>
+                                      </div>
                                     </div>
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">date:</span>{" "}
-                                      <span className="ml-1 text-white font-semibold">
-                                        {date}
-                                      </span>
-                                    </div>
-                                  </div>
 
-                                  {/* Location Name */}
-                                  <div className="mt-3">
-                                    <div className="flex items-center text-sm text-slate-300">
-                                      <svg
-                                        className="w-4 h-4 mr-2 text-emerald-500"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                        />
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                      </svg>
-                                      <span className="font-medium">
-                                        Location:
-                                      </span>{" "}
-                                      <span className="ml-1 text-white font-semibold">
-                                        {event.userlocation || "N/A"}
-                                      </span>
+                                    {/* Location Name */}
+                                    <div className="mt-3">
+                                      <div className="flex items-center text-sm text-slate-300">
+                                        <svg
+                                          className="w-4 h-4 mr-2 text-emerald-500"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                          />
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                          />
+                                        </svg>
+                                        <span className="font-medium">
+                                          Location:
+                                        </span>{" "}
+                                        <span className="ml-1 text-white font-semibold">
+                                          {event.userlocation || "N/A"}
+                                        </span>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </motion.div>
-                            );
-                          })
+                                </motion.div>
+                              );
+                            })
                         ) : (
                           <div className="text-center py-12">
                             <div className="w-16 h-16 mx-auto mb-4 bg-slate-700/50 rounded-full flex items-center justify-center">

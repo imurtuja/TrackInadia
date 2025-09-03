@@ -1,6 +1,14 @@
 // Vercel API route for PurpleDrone tracking
 // This handles CORS and proxies requests to the actual PurpleDrone API
 
+// Configure timeout for Vercel
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+  maxDuration: 30, // 30 seconds timeout
+};
+
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -24,7 +32,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "AWB number is required" });
     }
 
-    // First, get CSRF token
+    // First, get CSRF token with timeout
+    const csrfController = new AbortController();
+    const csrfTimeout = setTimeout(() => csrfController.abort(), 15000); // 15 second timeout
+
     const csrfResponse = await fetch(
       "https://app.cuberoote.com/cuberootapi/tracking",
       {
@@ -38,8 +49,11 @@ export default async function handler(req, res) {
           "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
         },
+        signal: csrfController.signal,
       }
     );
+
+    clearTimeout(csrfTimeout);
 
     if (!csrfResponse.ok) {
       throw new Error(`Failed to get CSRF token: ${csrfResponse.status}`);
@@ -52,7 +66,10 @@ export default async function handler(req, res) {
     );
     const csrfToken = csrfMatch ? csrfMatch[1] : "";
 
-    // Make tracking request
+    // Make tracking request with timeout
+    const trackingController = new AbortController();
+    const trackingTimeout = setTimeout(() => trackingController.abort(), 15000); // 15 second timeout
+
     const trackingResponse = await fetch(
       "https://app.cuberoote.com/cuberootapi/trackwithawb",
       {
@@ -70,8 +87,11 @@ export default async function handler(req, res) {
           awbnumber: awbnumber,
           ...(csrfToken && { csrfmiddlewaretoken: csrfToken }),
         }),
+        signal: trackingController.signal,
       }
     );
+
+    clearTimeout(trackingTimeout);
 
     if (!trackingResponse.ok) {
       throw new Error(`Tracking request failed: ${trackingResponse.status}`);
@@ -88,6 +108,26 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("PurpleDrone API Error:", error);
+
+    // Handle specific error types
+    if (error.name === "AbortError") {
+      return res.status(504).json({
+        success: false,
+        error:
+          "Request timeout - The API took too long to respond. Please try again.",
+        data: null,
+      });
+    }
+
+    if (error.message.includes("504") || error.message.includes("timeout")) {
+      return res.status(504).json({
+        success: false,
+        error:
+          "Gateway timeout - The external API is taking too long to respond. Please try again later.",
+        data: null,
+      });
+    }
+
     return res.status(500).json({
       success: false,
       error: error.message,

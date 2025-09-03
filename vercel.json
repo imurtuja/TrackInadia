@@ -23,5 +23,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/purpledrone/tracking.js": {
+      "maxDuration": 30
+    }
+  }
 }
