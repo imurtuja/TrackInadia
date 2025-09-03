@@ -10,12 +10,12 @@ const PURPLE_DRONE_API_BASE = import.meta.env.DEV
  * @returns {Promise<Object>} - Tracking data response
  */
 export const trackPackage = async (awbNumber, retryCount = 0) => {
-  const maxRetries = 2;
+  const maxRetries = 1; // Reduced retries since API takes 40sec to 1.5min
 
   try {
     // Create AbortController for timeout handling
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 seconds timeout
 
     // Use Vercel API route for both development and production
     const response = await fetch(`${PURPLE_DRONE_API_BASE}/tracking`, {
