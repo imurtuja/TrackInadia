@@ -361,7 +361,7 @@ const PurpleDroneTracking = () => {
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                           <div className="mb-4 sm:mb-0">
                             <h2 className="text-2xl font-bold mb-1">
-                              AWB: {orderData?.AWBNumber || "N/A"}
+                              AWB: {latestEvent?.AWBNumber || "N/A"}
                             </h2>
                             {latestEvent && (
                               <p className="text-purple-100 text-sm">
