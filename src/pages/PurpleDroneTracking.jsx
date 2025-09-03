@@ -377,7 +377,7 @@ const PurpleDroneTracking = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center">
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
                           <svg
                             className="w-4 h-4 text-white"
