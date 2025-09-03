@@ -140,7 +140,7 @@ const PurpleDroneTracking = () => {
                 PurpleDrone Tracking
               </motion.h1>
               <motion.p
-                className="text-lg sm:text-xl text-emerald-100 max-w-3xl mx-auto"
+                className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -428,12 +428,12 @@ const PurpleDroneTracking = () => {
 
                     {/* Delivery Timeline */}
                     <motion.div
-                      className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6 sm:p-8"
+                      className="bg-slate-800/60 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-700/50 p-6 sm:p-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center">
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
                           <svg
                             className="w-4 h-4 text-white"
@@ -460,7 +460,7 @@ const PurpleDroneTracking = () => {
                             return (
                               <motion.div
                                 key={index}
-                                className="flex items-start space-x-4 p-4 bg-emerald-50 rounded-xl"
+                                className="flex items-start space-x-4 p-4 bg-slate-700/50 rounded-xl border border-slate-600/50"
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.1 }}
@@ -481,20 +481,20 @@ const PurpleDroneTracking = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                                    <h4 className="font-semibold text-gray-900 text-lg">
+                                    <h4 className="font-semibold text-white text-lg">
                                       {event.Remarks}
                                     </h4>
                                     <span
                                       className={`px-3 py-1 rounded-full text-sm font-medium border ${
                                         index === 0
-                                          ? "bg-green-100 text-green-800 border-green-200"
-                                          : "bg-gray-100 text-gray-800 border-gray-200"
+                                          ? "bg-green-500/20 text-green-300 border-green-500/30"
+                                          : "bg-slate-600/50 text-slate-300 border-slate-500/50"
                                       }`}
                                     >
                                       {event.Status || "N/A"}
                                     </span>
                                   </div>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-300">
                                     <div className="flex items-center">
                                       <svg
                                         className="w-4 h-4 mr-2 text-emerald-500"
@@ -536,9 +536,9 @@ const PurpleDroneTracking = () => {
                           })
                         ) : (
                           <div className="text-center py-12">
-                            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                            <div className="w-16 h-16 mx-auto mb-4 bg-slate-700/50 rounded-full flex items-center justify-center">
                               <svg
-                                className="w-8 h-8 text-gray-400"
+                                className="w-8 h-8 text-slate-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -551,7 +551,7 @@ const PurpleDroneTracking = () => {
                                 />
                               </svg>
                             </div>
-                            <p className="text-gray-500 text-lg">
+                            <p className="text-slate-300 text-lg">
                               No tracking history available
                             </p>
                           </div>
@@ -562,12 +562,12 @@ const PurpleDroneTracking = () => {
                     {/* Status Details */}
                     {narvarData && narvarData.length > 0 && (
                       <motion.div
-                        className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6 sm:p-8"
+                        className="bg-slate-800/60 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-700/50 p-6 sm:p-8"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
                       >
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <h3 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center">
                           <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
                             <svg
                               className="w-4 h-4 text-white"
@@ -589,41 +589,41 @@ const PurpleDroneTracking = () => {
                           {narvarData.map((item, index) => (
                             <motion.div
                               key={index}
-                              className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 sm:p-6 border border-emerald-200"
+                              className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/50"
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: index * 0.1 }}
                             >
                               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
-                                  <span className="text-emerald-600 font-medium">
+                                  <span className="text-slate-300 font-medium">
                                     Status:
                                   </span>
-                                  <p className="text-gray-900 font-semibold text-lg">
+                                  <p className="text-white font-semibold text-lg">
                                     {item.Status}
                                   </p>
                                 </div>
                                 <div>
-                                  <span className="text-emerald-600 font-medium">
+                                  <span className="text-slate-300 font-medium">
                                     Mode:
                                   </span>
-                                  <p className="text-gray-900 font-semibold text-lg">
+                                  <p className="text-white font-semibold text-lg">
                                     {item.ShipmentMode}
                                   </p>
                                 </div>
                                 <div>
-                                  <span className="text-emerald-600 font-medium">
+                                  <span className="text-slate-300 font-medium">
                                     Location:
                                   </span>
-                                  <p className="text-gray-900 font-semibold text-lg break-words">
+                                  <p className="text-white font-semibold text-lg break-words">
                                     {item.LocationName ||
                                       item.CityName ||
                                       "N/A"}
                                   </p>
                                 </div>
                               </div>
-                              <div className="pt-4 border-t border-emerald-200">
-                                <div className="text-sm text-gray-500 space-y-1">
+                              <div className="pt-4 border-t border-slate-600/50">
+                                <div className="text-sm text-slate-300 space-y-1">
                                   <div>
                                     Created: {formatDate(item.CreatedAt)}
                                   </div>
